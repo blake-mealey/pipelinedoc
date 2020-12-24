@@ -40,7 +40,7 @@ function code(text?: string) {
 }
 
 function codeBlock(lang: string, text: string) {
-  return '```' + lang + '\n' + text.trim() + '\n' + '```';
+  return '```' + `${lang}\n${text.trim()}\n` + '```';
 }
 
 function yamlBlock(yamlObject: any) {
