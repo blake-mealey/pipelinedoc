@@ -31,7 +31,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "gluegun": "latest"
+    "gluegun": "latest",
+    "az-pipelines-documenter": "0.1.0"
   },
   "devDependencies": {
     "@types/node": "^12.7.11",
@@ -50,7 +51,6 @@
     "testEnvironment": "node"
   },
   "prettier": {
-    "semi": false,
     "singleQuote": true
   }
 }

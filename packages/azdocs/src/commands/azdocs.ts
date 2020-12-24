@@ -1,12 +1,12 @@
-import { GluegunCommand } from 'gluegun'
+import { GluegunCommand } from 'gluegun';
 
 const command: GluegunCommand = {
   name: 'azdocs',
   run: async toolbox => {
-    const { print } = toolbox
+    const { print } = toolbox;
 
-    print.info('Welcome to your CLI')
+    print.printHelp(toolbox);
   }
-}
+};
 
-module.exports = command
+module.exports = command;

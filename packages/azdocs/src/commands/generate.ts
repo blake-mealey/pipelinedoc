@@ -1,23 +1,20 @@
-import { GluegunToolbox } from 'gluegun'
+import { GluegunToolbox } from 'gluegun';
+import { generate } from 'az-pipelines-documenter';
 
 module.exports = {
   name: 'generate',
-  alias: ['g'],
   run: async (toolbox: GluegunToolbox) => {
     const {
-      parameters,
-      template: { generate },
-      print: { info }
-    } = toolbox
+      parameters: { first: name },
+      filesystem: { writeAsync, readAsync }
+    } = toolbox;
 
-    const name = parameters.first
+    const file = await readAsync(name);
 
-    await generate({
-      template: 'model.ts.ejs',
-      target: `models/${name}-model.ts`,
-      props: { name }
-    })
+    const markdown = generate(file, {
+      name: name
+    });
 
-    info(`Generated file at models/${name}-model.ts`)
+    await writeAsync(name + '.md', markdown);
   }
-}
+};
