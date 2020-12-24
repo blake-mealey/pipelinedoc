@@ -1,0 +1,99 @@
+parameters:
+  - name: my_param
+    displayName: The thing of the thing
+    type: string
+    default: word
+
+jobs:
+  - job: ${{ format('tox_{0}{1}', parameters.os, parameters.name_postfix) }}
+    strategy:
+      matrix:
+        ${{ each env in parameters.toxenvs }}:
+          ${{ each arch in parameters.architectures }}:
+            ${{ format('{0}_{1}', env, arch) }}:
+              TOXENV: ${{ env }}
+              arch: ${{ arch }}
+              ${{ if or(eq(env, 'py27'), startsWith(env, 'py27-')) }}:
+                py: '2.7'
+              ${{ if or(eq(env, 'py35'), startsWith(env, 'py35-')) }}:
+                py: '3.5'
+              ${{ if or(eq(env, 'py36'), startsWith(env, 'py36-')) }}:
+                py: '3.6'
+              ${{ if or(eq(env, 'py37'), startsWith(env, 'py37-')) }}:
+                py: '3.7'
+              ${{ if or(eq(env, 'py38'), startsWith(env, 'py38-')) }}:
+                py: '3.8'
+              ${{ if or(eq(env, 'py39'), startsWith(env, 'py39-')) }}:
+                py: '3.9'
+              ${{ if or(eq(env, 'pypy'), startsWith(env, 'pypy-')) }}:
+                py: 'pypy2'
+              ${{ if or(eq(env, 'pypy3'), startsWith(env, 'pypy3-')) }}:
+                py: 'pypy3'
+              # we'll run tox using this on py310
+              ${{ if or(eq(env, 'py310'), startsWith(env, 'py310-')) }}:
+                py: '3.9'
+                ispy310: true
+              # Use Python 3.9 by default for toxenvs that don't start with 'py'
+              ${{ if not(startsWith(env, 'py')) }}:
+                py: '3.9'
+
+    pool:
+      ${{ if eq(parameters.os, 'linux') }}:
+        vmImage: ubuntu-18.04
+      ${{ if eq(parameters.os, 'windows') }}:
+        vmImage: windows-2019
+      ${{ if eq(parameters.os, 'macos') }}:
+        vmImage: macOS-10.14
+
+    variables:
+      ${{ if eq(parameters.os, 'windows') }}:
+        bindir: Scripts
+      ${{ if ne(parameters.os, 'windows') }}:
+        bindir: bin
+      ${{ insert }}: ${{ parameters.additional_variables }}
+
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: $(py)
+          architecture: $(arch)
+
+      - script: |
+          sudo add-apt-repository ppa:deadsnakes/nightly
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends python3.10-dev python3.10-distutils
+        condition: variables.ispy310
+        displayName: install python 3.10
+
+      - ${{ parameters.pre_test }}
+
+      - script: python -m pip install --upgrade tox setuptools virtualenv wheel
+        displayName: install tox
+      - script: tox
+        displayName: run tox
+
+      - ${{ if eq(parameters.coverage, true) }}:
+          - bash: .tox/$(TOXENV)/$(bindir)/coverage xml -o coverage.xml
+            displayName: generate coverage xml
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: cobertura
+              summaryFileLocation: coverage.xml
+            displayName: publish coverage artifact
+
+      - ${{ if eq(parameters.wheel_tags, true) }}:
+          - bash: .tox/$(TOXENV)/$(bindir)/pip wheel --no-deps . -w wheels
+            displayName: build wheel
+            condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+          - ${{ if eq(parameters.os, 'macos') }}:
+              - bash: |
+                  .tox/$(TOXENV)/$(bindir)/pip install git+https://github.com/asottile/delocate@69d783fb
+                  .tox/$(TOXENV)/$(bindir)/delocate-wheel wheels/*.whl
+                condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+                displayName: delocate
+          - task: PublishBuildArtifacts@1
+            condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+            inputs:
+              pathToPublish: wheels
+              artifactName: wheel_${{ parameters.os }}_$(TOXENV)${{ parameters.name_postfix }}
+            displayName: publish wheel artifact
