@@ -1,0 +1,12 @@
+parameters:
+  - name: name
+    displayName: Name of the person to say hello to
+    default: World
+    type: string
+
+stages:
+  - stage: hello_world
+    jobs:
+      - template: hello-world-v1.jobs.yml
+        parameters:
+          name: ${{ parameters.name }}

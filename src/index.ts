@@ -1,5 +1,4 @@
-import { safeLoad as parseYaml } from 'js-yaml';
-import { promises as fs } from 'fs';
+import { safeLoad as parseYaml, safeDump as stringifyYaml } from 'js-yaml';
 
 interface GenerateOptions {
   name: string;
@@ -44,6 +43,15 @@ function codeBlock(lang: string, text: string) {
   return '```' + lang + '\n' + text.trim() + '\n' + '```';
 }
 
+function yamlBlock(yamlObject: any) {
+  return codeBlock(
+    'yaml',
+    stringifyYaml(yamlObject, {
+      skipInvalid: true,
+    })
+  );
+}
+
 function bold(text: string) {
   return `*${text}*`;
 }
@@ -86,7 +94,11 @@ interface Template {
 
 function maybe(condition: any, value?: any) {
   if (condition) {
-    return [value === undefined ? condition : value];
+    const v = value === undefined ? condition : value;
+    if (Array.isArray(v)) {
+      return v;
+    }
+    return [v];
   } else {
     return [];
   }
@@ -171,42 +183,66 @@ function generateUsage(template: Template, options: GenerateOptions) {
     options.templatePath +
     (options.templateRepo ? `@${options.templateRepo.identifier}` : '');
 
-  let parametersUsage: string;
-
-  if (template.parameters) {
+  const parameterList = getParameterList(template.parameters);
+  let parameters: any | undefined;
+  if (parameterList) {
+    parameters = Object.fromEntries(
+      parameterList.map((param): [string, string] => [
+        param.name ?? '',
+        param.type ?? '',
+      ])
+    );
   }
 
-  let usage: string;
+  const insertTemplateGenerators: Record<typeof usageType, () => string> = {
+    steps: () =>
+      yamlBlock({
+        jobs: [
+          {
+            job: 'my_job',
+            steps: [{ template: templatePath, parameters }],
+          },
+        ],
+      }),
+    jobs: () =>
+      yamlBlock({
+        jobs: [{ template: templatePath, parameters }],
+      }),
+    stages: () =>
+      yamlBlock({
+        stages: [{ template: templatePath, parameters }],
+      }),
+    variables: () =>
+      yamlBlock({
+        variables: [{ template: templatePath, parameters }],
+      }),
+  };
 
-  switch (usageType) {
-    case 'steps':
-      usage = codeBlock(
-        'yaml',
-        `jobs:
-- job: MyJob
-  steps:
-  - template: ${templatePath}`
-      );
-      break;
-    case 'jobs':
-      usage = codeBlock(
-        'yaml',
-        `jobs:
-- template: ${templatePath}`
-      );
-      break;
-    case 'stages':
-      usage = codeBlock(
-        'yaml',
-        `stages:
-- template: ${templatePath}`
-      );
-      break;
-    default:
-      usage = '';
+  let templateRepoUsage: string[] | undefined;
+  if (options.templateRepo) {
+    templateRepoUsage = [
+      'Use template repository:',
+      yamlBlock({
+        resources: {
+          repositories: [
+            {
+              repo: options.templateRepo.identifier,
+              name: options.templateRepo.name,
+              ref: options.templateRepo.ref,
+              type: options.templateRepo.type,
+            },
+          ],
+        },
+      }),
+    ];
   }
 
-  return ['Example usage:', usage];
+  return [
+    heading('Example usage', (options.headingDepth ?? 1) + 1),
+    ...maybe(templateRepoUsage),
+    'Insert template:',
+    insertTemplateGenerators[usageType](),
+  ];
 }
 
 function generateParameters(
@@ -218,15 +254,6 @@ function generateParameters(
   if (!parameterList) {
     return [];
   }
-
-  // Sort by required or not
-  parameterList = parameterList.sort((a, b) =>
-    requiredParameter(a) !== requiredParameter(b)
-      ? requiredParameter(a)
-        ? -1
-        : 1
-      : 0
-  );
 
   return [
     heading('Parameters', headingDepth),
@@ -256,36 +283,3 @@ export function generate(data: string, options: GenerateOptions) {
 
   return lines.join('\n\n');
 }
-
-async function test() {
-  const file = await fs.readFile('./fixture.yml', { encoding: 'utf-8' });
-  const markdown = generate(file, {
-    name: 'My fancy template',
-    version: 1,
-    deprecatedWarning: 'Use v2',
-    description: 'What does this do?',
-    headingDepth: 2,
-    templatePath: 'fixtures/fixture.yml',
-    templateRepo: {
-      identifier: 'templates',
-      name: 'Project/RepoName',
-      type: 'git',
-    },
-  });
-
-  const markdown2 = generate(file, {
-    name: 'My fancy template',
-    version: 2,
-    description: 'What does this do?',
-    headingDepth: 2,
-    templatePath: 'fixtures/fixture.yml',
-  });
-
-  const fileOut = `# My docs
-
-${markdown}
-${markdown2}`;
-  await fs.writeFile('./fixture.md', fileOut, { encoding: 'utf-8' });
-}
-
-test();
