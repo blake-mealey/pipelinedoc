@@ -1,4 +1,4 @@
-# My templates
+# az-pipelines-documenter
 
 ## hello-world-v1
 
