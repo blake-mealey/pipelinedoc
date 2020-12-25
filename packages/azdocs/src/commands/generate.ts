@@ -2,6 +2,7 @@ import { GluegunToolbox } from 'gluegun';
 import {
   generate,
   GenerateOptions,
+  RepoMetaData,
   TemplateMetaData,
 } from 'az-pipelines-documenter';
 import { glob } from 'glob';
@@ -48,7 +49,7 @@ module.exports = {
       return {
         name: `${gitUrl.owner}/${gitUrl.name}`,
         type: sourceToType[gitUrl.source],
-      };
+      } as RepoMetaData;
     }
 
     const gitUrl = await getGitUrl();
