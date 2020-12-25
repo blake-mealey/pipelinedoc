@@ -1,13 +1,12 @@
 import { safeLoad as parseYaml, safeDump as stringifyYaml } from 'js-yaml';
 
-interface GenerateOptions {
+export interface TemplateMetaData {
   name: string;
   description?: string;
   version?: number | string;
   deprecatedWarning?: string;
-  headingDepth?: number;
-  templatePath?: string;
-  templateRepo?: {
+  filePath?: string;
+  repo?: {
     identifier: string;
     type: 'git' | 'github' | 'bitbucket';
     name: string;
@@ -16,14 +15,12 @@ interface GenerateOptions {
   };
 }
 
+export interface GenerateOptions {
+  headingDepth: number;
+}
+
 function heading(text: string, depth: number) {
-  return (
-    Array(depth)
-      .fill('#')
-      .join('') +
-    ' ' +
-    text
-  );
+  return Array(depth).fill('#').join('') + ' ' + text;
 }
 
 function table([header, ...rows]: string[][]) {
@@ -140,28 +137,30 @@ function getParameterList(
       }));
 }
 
-function generateHeading(options: GenerateOptions) {
+function generateHeading(meta: TemplateMetaData, options: GenerateOptions) {
   return heading(
-    [options.name, ...maybe(options.version, `(v${options.version})`)].join(
-      ' '
-    ),
-    options.headingDepth ?? 1
+    [meta.name, ...maybe(meta.version, `(v${meta.version})`)].join(' '),
+    options.headingDepth
   );
 }
 
-function generateDeprecatedWarning(options: GenerateOptions) {
+function generateDeprecatedWarning(meta: TemplateMetaData) {
   return maybe(
-    options.deprecatedWarning,
-    bold(italics(`⚠ DEPRECATED: ${options.deprecatedWarning} ⚠`))
+    meta.deprecatedWarning,
+    bold(italics(`⚠ DEPRECATED: ${meta.deprecatedWarning} ⚠`))
   );
 }
 
-function generateDescription(options: GenerateOptions) {
-  return maybe(options.description);
+function generateDescription(meta: TemplateMetaData) {
+  return maybe(meta.description);
 }
 
-function generateUsage(template: Template, options: GenerateOptions) {
-  if (!options.templatePath) {
+function generateUsage(
+  template: Template,
+  meta: TemplateMetaData,
+  options: GenerateOptions
+) {
+  if (!meta.filePath) {
     return [];
   }
 
@@ -180,8 +179,7 @@ function generateUsage(template: Template, options: GenerateOptions) {
   }
 
   let templatePath =
-    options.templatePath +
-    (options.templateRepo ? `@${options.templateRepo.identifier}` : '');
+    meta.filePath + (meta.repo ? `@${meta.repo.identifier}` : '');
 
   const parameterList = getParameterList(template.parameters);
   let parameters: any | undefined;
@@ -219,17 +217,17 @@ function generateUsage(template: Template, options: GenerateOptions) {
   };
 
   let templateRepoUsage: string[] | undefined;
-  if (options.templateRepo) {
+  if (meta.repo) {
     templateRepoUsage = [
       'Use template repository:',
       yamlBlock({
         resources: {
           repositories: [
             {
-              repo: options.templateRepo.identifier,
-              name: options.templateRepo.name,
-              ref: options.templateRepo.ref,
-              type: options.templateRepo.type,
+              repo: meta.repo.identifier,
+              name: meta.repo.name,
+              ref: meta.repo.ref,
+              type: meta.repo.type,
             },
           ],
         },
@@ -238,28 +236,25 @@ function generateUsage(template: Template, options: GenerateOptions) {
   }
 
   return [
-    heading('Example usage', (options.headingDepth ?? 1) + 1),
+    heading('Example usage', options.headingDepth + 1),
     ...maybe(templateRepoUsage),
     'Insert template:',
     insertTemplateGenerators[usageType](),
   ];
 }
 
-function generateParameters(
-  headingDepth: number,
-  parameters?: TemplateParameters
-) {
-  let parameterList = getParameterList(parameters);
+function generateParameters(template: Template, options: GenerateOptions) {
+  let parameterList = getParameterList(template.parameters);
 
   if (!parameterList) {
     return [];
   }
 
   return [
-    heading('Parameters', headingDepth),
+    heading('Parameters', options.headingDepth + 1),
     table([
       ['Parameter', 'Type', 'Default', 'Description'],
-      ...parameterList.map(param => [
+      ...parameterList.map((param) => [
         (code(param.name) ?? '') +
           (requiredParameter(param) ? ' (required)' : ''),
         code(param.type) ?? '',
@@ -270,15 +265,23 @@ function generateParameters(
   ];
 }
 
-export function generate(data: string, options: GenerateOptions) {
+export function generate(
+  data: string,
+  meta: TemplateMetaData,
+  options?: Partial<GenerateOptions>
+) {
   const template = parseYaml(data) as Template;
 
+  const fullOptions: GenerateOptions = {
+    headingDepth: options?.headingDepth ?? 1,
+  };
+
   const lines: (string | undefined)[] = [
-    generateHeading(options),
-    ...generateDeprecatedWarning(options),
-    ...generateDescription(options),
-    ...generateUsage(template, options),
-    ...generateParameters((options.headingDepth ?? 1) + 1, template.parameters),
+    generateHeading(meta, fullOptions),
+    ...generateDeprecatedWarning(meta),
+    ...generateDescription(meta),
+    ...generateUsage(template, meta, fullOptions),
+    ...generateParameters(template, fullOptions),
   ];
 
   return lines.join('\n\n');

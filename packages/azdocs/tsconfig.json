@@ -1,15 +1,8 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "lib": [
-      "es2015",
-      "scripthost",
-      "es2015.promise",
-      "es2015.generator",
-      "es2015.iterable",
-      "dom"
-    ],
+    "lib": ["esnext", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": false,
@@ -21,7 +14,8 @@
     "strict": false,
     "target": "es5",
     "declaration": true,
-    "declarationDir": "build/types"
+    "declarationDir": "build/types",
+    "esModuleInterop": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

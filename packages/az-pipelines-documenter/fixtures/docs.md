@@ -1,6 +1,6 @@
-# RepoName Templates
+# My templates
 
-## hello-world-v1.jobs.yml (v1)
+## hello-world-v1
 
 ### Example usage
 
@@ -10,15 +10,15 @@ Use template repository:
 resources:
   repositories:
     - repo: templates
-      name: Project/RepoName
-      type: git
+      name: blake-mealey/az-pipelines-documenter
+      type: github
 ```
 
 Insert template:
 
 ```yaml
 jobs:
-  - template: fixtures/hello-world-v1.jobs.yml@templates
+  - template: hello-world-v1.jobs.yml@templates
     parameters:
       name: string
 ```
@@ -29,7 +29,7 @@ jobs:
 |---|---|---|---|
 |`name`|`string`|`"World"`|Name of the person to say hello to|
 
-## hello-world-v1.stages.yml (v1)
+## hello-world-v1
 
 ### Example usage
 
@@ -39,15 +39,15 @@ Use template repository:
 resources:
   repositories:
     - repo: templates
-      name: Project/RepoName
-      type: git
+      name: blake-mealey/az-pipelines-documenter
+      type: github
 ```
 
 Insert template:
 
 ```yaml
 stages:
-  - template: fixtures/hello-world-v1.stages.yml@templates
+  - template: hello-world-v1.stages.yml@templates
     parameters:
       name: string
 ```
@@ -58,7 +58,7 @@ stages:
 |---|---|---|---|
 |`name`|`string`|`"World"`|Name of the person to say hello to|
 
-## hello-world-v1.steps.yml (v1)
+## hello-world-v1
 
 ### Example usage
 
@@ -68,8 +68,8 @@ Use template repository:
 resources:
   repositories:
     - repo: templates
-      name: Project/RepoName
-      type: git
+      name: blake-mealey/az-pipelines-documenter
+      type: github
 ```
 
 Insert template:
@@ -78,7 +78,7 @@ Insert template:
 jobs:
   - job: my_job
     steps:
-      - template: fixtures/hello-world-v1.steps.yml@templates
+      - template: hello-world-v1.steps.yml@templates
         parameters:
           name: string
 ```
@@ -89,7 +89,7 @@ jobs:
 |---|---|---|---|
 |`name`|`string`|`"World"`|Name of the person to say hello to|
 
-## hello-world-v1.variables.yml (v1)
+## hello-world-v1
 
 ### Example usage
 
@@ -99,13 +99,13 @@ Use template repository:
 resources:
   repositories:
     - repo: templates
-      name: Project/RepoName
-      type: git
+      name: blake-mealey/az-pipelines-documenter
+      type: github
 ```
 
 Insert template:
 
 ```yaml
 variables:
-  - template: fixtures/hello-world-v1.variables.yml@templates
+  - template: hello-world-v1.variables.yml@templates
 ```
