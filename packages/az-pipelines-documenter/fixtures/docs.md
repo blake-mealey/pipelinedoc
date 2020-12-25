@@ -2,6 +2,11 @@
 
 ## hello-world-v1
 
+_Template type: `jobs`_
+
+A job which says "Hello" to the provided name (defaults to "World").
+Utlizes the hello-world-v1.steps template under the hood.
+
 ### Example usage
 
 Use template repository:
@@ -31,6 +36,8 @@ jobs:
 
 ## hello-world-v1
 
+_Template type: `stages`_
+
 ### Example usage
 
 Use template repository:
@@ -59,6 +66,8 @@ stages:
 |`name`|`string`|`"World"`|Name of the person to say hello to|
 
 ## hello-world-v1
+
+_Template type: `steps`_
 
 ### Example usage
 
@@ -90,6 +99,8 @@ jobs:
 |`name`|`string`|`"World"`|Name of the person to say hello to|
 
 ## hello-world-v1
+
+_Template type: `variables`_
 
 ### Example usage
 

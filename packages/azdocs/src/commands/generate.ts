@@ -75,15 +75,29 @@ module.exports = {
       },
     };
 
+    function getDescriptionFromYamlCommentBlock(data: string) {
+      const lines = data.split('\n');
+      let blockLines: string[] = [];
+      let line: string;
+      line = lines.shift().trim();
+      while (line.startsWith('#')) {
+        blockLines.push(line.substring(1).trim());
+        line = lines.shift().trim();
+      }
+      return blockLines.length > 0 ? blockLines.join('\n') : undefined;
+    }
+
     const templateDocs = await Promise.all(
       files
         .filter((file) => file.endsWith('.yml') || file.endsWith('yaml'))
         .map(async (file) => {
+          const data = await readAsync(file);
           return generate(
-            await readAsync(file),
+            data,
             {
               ...meta,
               name: basename(file, file.substring(file.indexOf('.'))),
+              description: getDescriptionFromYamlCommentBlock(data),
               filePath: file,
             },
             generateOptions

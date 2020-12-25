@@ -1,3 +1,6 @@
+# A job which says "Hello" to the provided name (defaults to "World").
+# Utlizes the hello-world-v1.steps template under the hood.
+
 parameters:
   - name: name
     displayName: Name of the person to say hello to

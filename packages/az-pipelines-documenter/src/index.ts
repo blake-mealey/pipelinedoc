@@ -50,11 +50,11 @@ function yamlBlock(yamlObject: any) {
 }
 
 function bold(text: string) {
-  return `*${text}*`;
+  return `**${text}**`;
 }
 
 function italics(text: string) {
-  return `__${text}__`;
+  return `_${text}_`;
 }
 
 type TemplateParameterType =
@@ -137,6 +137,18 @@ function getParameterList(
       }));
 }
 
+function getTemplateType(template: Template) {
+  return template.steps
+    ? 'steps'
+    : template.jobs
+    ? 'jobs'
+    : template.stages
+    ? 'stages'
+    : template.variables
+    ? 'variables'
+    : undefined;
+}
+
 function generateHeading(meta: TemplateMetaData, options: GenerateOptions) {
   return heading(
     [meta.name, ...maybe(meta.version, `(v${meta.version})`)].join(' '),
@@ -149,6 +161,12 @@ function generateDeprecatedWarning(meta: TemplateMetaData) {
     meta.deprecatedWarning,
     bold(italics(`⚠ DEPRECATED: ${meta.deprecatedWarning} ⚠`))
   );
+}
+
+function generateTemplateType(template: Template) {
+  const templateType = getTemplateType(template);
+
+  return maybe(templateType, italics(`Template type: ${code(templateType)}`));
 }
 
 function generateDescription(meta: TemplateMetaData) {
@@ -164,17 +182,9 @@ function generateUsage(
     return [];
   }
 
-  const usageType = template.steps
-    ? 'steps'
-    : template.jobs
-    ? 'jobs'
-    : template.stages
-    ? 'stages'
-    : template.variables
-    ? 'variables'
-    : undefined;
+  const templateType = getTemplateType(template);
 
-  if (!usageType) {
+  if (!templateType) {
     return [];
   }
 
@@ -192,7 +202,7 @@ function generateUsage(
     );
   }
 
-  const insertTemplateGenerators: Record<typeof usageType, () => string> = {
+  const insertTemplateGenerators: Record<typeof templateType, () => string> = {
     steps: () =>
       yamlBlock({
         jobs: [
@@ -239,7 +249,7 @@ function generateUsage(
     heading('Example usage', options.headingDepth + 1),
     ...maybe(templateRepoUsage),
     'Insert template:',
-    insertTemplateGenerators[usageType](),
+    insertTemplateGenerators[templateType](),
   ];
 }
 
@@ -279,6 +289,7 @@ export function generate(
   const lines: (string | undefined)[] = [
     generateHeading(meta, fullOptions),
     ...generateDeprecatedWarning(meta),
+    ...generateTemplateType(template),
     ...generateDescription(meta),
     ...generateUsage(template, meta, fullOptions),
     ...generateParameters(template, fullOptions),
