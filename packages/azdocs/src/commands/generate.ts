@@ -54,10 +54,6 @@ module.exports = {
     const gitUrl = await getGitUrl();
     const repoDetails = getRepoDetails(gitUrl);
 
-    // Load options
-    const repoIdentifier: string = options.repoIdentifier ?? 'templates';
-    const projectName: string | undefined = options.projectName ?? gitUrl.name;
-
     const files = (
       await Promise.all(
         patterns.map((pattern) =>
@@ -75,11 +71,11 @@ module.exports = {
     const meta: Partial<TemplateMetaData> = {
       repo: {
         ...repoDetails,
-        identifier: repoIdentifier,
+        identifier: options.repoIdentifier ?? 'templates',
       },
     };
 
-    const markdown = await Promise.all(
+    const templateDocs = await Promise.all(
       files
         .filter((file) => file.endsWith('.yml') || file.endsWith('yaml'))
         .map(async (file) => {
@@ -95,6 +91,9 @@ module.exports = {
         })
     );
 
-    await writeAsync('docs.md', `# ${projectName}\n\n` + markdown.join('\n'));
+    await writeAsync(
+      'docs.md',
+      `# ${options.projectName ?? gitUrl.name}\n\n` + templateDocs.join('\n')
+    );
   },
 };
