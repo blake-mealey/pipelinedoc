@@ -1,6 +1,6 @@
-# azdocs CLI
+# pipedoc CLI
 
-A CLI for azdocs.
+CLI for generating docs from Azure Pipelines YAML templates.
 
 ## Customizing your CLI
 
@@ -22,4 +22,3 @@ $ npm publish
 # License
 
 MIT - see LICENSE
-

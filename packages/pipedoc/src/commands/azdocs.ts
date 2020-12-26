@@ -1,7 +1,7 @@
 import { GluegunCommand } from 'gluegun';
 
 const command: GluegunCommand = {
-  name: 'azdocs',
+  name: 'pipedoc',
   run: async toolbox => {
     const { print } = toolbox;
 

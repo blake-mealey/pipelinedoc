@@ -1,11 +1,11 @@
 {
-  "name": "azdocs",
+  "name": "pipedoc",
   "version": "0.0.1",
-  "description": "azdocs CLI",
+  "description": "CLI for generating docs from Azure Pipelines YAML templates",
   "private": true,
   "types": "build/types/types.d.ts",
   "bin": {
-    "azdocs": "bin/azdocs"
+    "pipedoc": "bin/pipedoc"
   },
   "scripts": {
     "format": "prettier --write **/*.{js,ts,tsx,json}",

@@ -2,6 +2,6 @@
   "private": true,
   "workspaces": [
     "packages/az-pipelines-documenter",
-    "packages/azdocs"
+    "packages/pipedoc"
   ]
 }
