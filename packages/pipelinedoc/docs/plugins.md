@@ -1,10 +1,10 @@
-# Plugin guide for pipedoc
+# Plugin guide for pipelinedoc
 
-Plugins allow you to add features to pipedoc, such as commands and
+Plugins allow you to add features to pipelinedoc, such as commands and
 extensions to the `toolbox` object that provides the majority of the functionality
-used by pipedoc.
+used by pipelinedoc.
 
-Creating a pipedoc plugin is easy. Just create a repo with two folders:
+Creating a pipelinedoc plugin is easy. Just create a repo with two folders:
 
 ```
 commands/
@@ -44,6 +44,6 @@ This is then accessible in your plugin's commands as `toolbox.bar`.
 
 # Loading a plugin
 
-To load a particular plugin (which has to start with `pipedoc-*`),
-install it to your project using `npm install --save-dev pipedoc-PLUGINNAME`,
-and pipedoc will pick it up automatically.
+To load a particular plugin (which has to start with `pipelinedoc-*`),
+install it to your project using `npm install --save-dev pipelinedoc-PLUGINNAME`,
+and pipelinedoc will pick it up automatically.

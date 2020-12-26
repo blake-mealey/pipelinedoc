@@ -1,3 +1,3 @@
-# Command Reference for pipedoc
+# Command Reference for pipelinedoc
 
 TODO: Add your command reference here

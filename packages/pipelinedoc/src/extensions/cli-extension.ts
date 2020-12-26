@@ -8,10 +8,10 @@ module.exports = (toolbox: GluegunToolbox) => {
   };
 
   // enable this if you want to read configuration in from
-  // the current folder's package.json (in a "pipedoc" property),
-  // pipedoc.config.json, etc.
+  // the current folder's package.json (in a "pipelinedoc" property),
+  // pipelinedoc.config.json, etc.
   // toolbox.config = {
   //   ...toolbox.config,
-  //   ...toolbox.config.loadConfig("pipedoc", process.cwd())
+  //   ...toolbox.config.loadConfig("pipelinedoc", process.cwd())
   // }
 };
