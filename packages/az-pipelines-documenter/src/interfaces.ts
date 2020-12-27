@@ -6,6 +6,13 @@ export interface RepoMetaData {
   endpoint?: string;
 }
 
+export interface ParameterMetaData {
+  description?: string;
+  format?: string;
+}
+
+export type ParametersMetaData = Record<string, ParameterMetaData>;
+
 export interface TemplateMetaData {
   name: string;
   description?: string;
@@ -13,6 +20,7 @@ export interface TemplateMetaData {
   deprecatedWarning?: string;
   filePath?: string;
   repo?: RepoMetaData;
+  parameters?: ParametersMetaData;
 }
 
 export interface GenerateOptions {

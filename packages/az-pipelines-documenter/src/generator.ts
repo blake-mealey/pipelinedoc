@@ -14,9 +14,15 @@ import {
   requiredParameter,
 } from './utils/templates';
 
-function maybe(condition: any, value?: any) {
+function maybe(condition: any, value?: any, otherwise?: any) {
   if (condition) {
     const v = value === undefined ? condition : value;
+    if (Array.isArray(v)) {
+      return v;
+    }
+    return [v];
+  } else if (otherwise !== undefined) {
+    const v = otherwise;
     if (Array.isArray(v)) {
       return v;
     }
@@ -24,6 +30,10 @@ function maybe(condition: any, value?: any) {
   } else {
     return [];
   }
+}
+
+function parameterMeta(meta: TemplateMetaData, parameterName: string) {
+  return meta.parameters?.[parameterName];
 }
 
 function generateHeading(meta: TemplateMetaData, options: GenerateOptions) {
@@ -130,7 +140,11 @@ function generateUsage(
   ];
 }
 
-function generateParameters(template: Template, options: GenerateOptions) {
+function generateParameters(
+  template: Template,
+  meta: TemplateMetaData,
+  options: GenerateOptions
+) {
   let parameterList = getParameterList(template.parameters);
 
   if (!parameterList) {
@@ -141,13 +155,27 @@ function generateParameters(template: Template, options: GenerateOptions) {
     heading('Parameters', options.headingDepth + 1),
     table([
       ['Parameter', 'Type', 'Default', 'Description'],
-      ...parameterList.map(param => [
-        (code(param.name) ?? '') +
-          (requiredParameter(param) ? ' (required)' : ''),
-        code(param.type) ?? '',
-        requiredParameter(param) ? 'N/A' : code(JSON.stringify(param.default)),
-        param.displayName ?? '',
-      ]),
+      ...parameterList.map(param => {
+        const paramMeta = param.name
+          ? parameterMeta(meta, param.name)
+          : undefined;
+        const isRequired = requiredParameter(param);
+        return [
+          [
+            maybe(param.displayName),
+            maybe(param.name, `(${code(param.name)})`),
+            maybe(isRequired, ' (required)'),
+          ].join(' '),
+          [
+            maybe(param.type, code(param.type)),
+            maybe(paramMeta?.format, `(${code(paramMeta?.format)})`),
+          ].join(' '),
+          [maybe(isRequired, 'N/A', code(JSON.stringify(param.default)))].join(
+            ' '
+          ),
+          [maybe(paramMeta?.description, undefined, 'TODO')].join(' '),
+        ];
+      }),
     ]),
   ];
 }
@@ -169,7 +197,7 @@ export function generate(
     ...generateTemplateType(template),
     ...generateDescription(meta),
     ...generateUsage(template, meta, fullOptions),
-    ...generateParameters(template, fullOptions),
+    ...generateParameters(template, meta, fullOptions),
   ];
 
   return lines.join('\n\n');

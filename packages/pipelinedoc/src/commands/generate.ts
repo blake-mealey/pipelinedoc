@@ -17,8 +17,9 @@ module.exports = {
   name: 'generate',
   run: async (toolbox: GluegunToolbox) => {
     const {
+      print: { error },
       parameters: { array: patterns, options },
-      filesystem: { writeAsync, readAsync, path }
+      filesystem: { writeAsync, readAsync, path, exists }
     } = toolbox;
 
     async function getGitUrl() {
@@ -76,37 +77,47 @@ module.exports = {
       }
     };
 
-    function getDescriptionFromYamlCommentBlock(data: string) {
-      const lines = data.split('\n');
-      let blockLines: string[] = [];
-      let line: string;
-      line = lines.shift().trim();
-      while (line.startsWith('#')) {
-        blockLines.push(line.substring(1).trim());
-        line = lines.shift().trim();
-      }
-      return blockLines.length > 0 ? blockLines.join('\n') : undefined;
-    }
-
     const outputDir = options.out ?? './docs';
 
-    await Promise.all(
-      files
-        .filter(file => file.endsWith('.yml') || file.endsWith('yaml'))
-        .map(async file => {
-          const data = await readAsync(file);
-          const markdown = generate(
-            data,
-            {
-              ...meta,
-              name: basename(file, file.substring(file.indexOf('.'))),
-              description: getDescriptionFromYamlCommentBlock(data),
-              filePath: file
-            },
-            generateOptions
-          );
-          await writeAsync(path(outputDir, `${file}.md`), markdown);
-        })
-    );
+    const ensureProperties = options.ensureProperties;
+
+    try {
+      await Promise.all(
+        files
+          .filter(file => file.endsWith('.yml') || file.endsWith('yaml'))
+          .map(async file => {
+            const data = await readAsync(file);
+
+            let properties = {
+              name: basename(file.substring(0, file.lastIndexOf('.')))
+            };
+
+            const propertiesFile =
+              file.substring(0, file.lastIndexOf('.')) + '.properties.json';
+            if (exists(propertiesFile) === 'file') {
+              properties = JSON.parse(await readAsync(propertiesFile));
+            } else {
+              if (ensureProperties) {
+                throw new Error(
+                  `Missing expected properties file ${propertiesFile} because --ensure-properties was specified.`
+                );
+              }
+            }
+
+            const markdown = generate(
+              data,
+              {
+                ...properties,
+                ...meta,
+                filePath: file
+              },
+              generateOptions
+            );
+            await writeAsync(path(outputDir, `${file}.md`), markdown);
+          })
+      );
+    } catch (e) {
+      error(e.message);
+    }
   }
 };

@@ -1,0 +1,10 @@
+{
+  "name": "Hello World Stages",
+  "version": 1,
+  "description": "A job which says \"Hello\" to the provided name (defaults to \"World\"). Utilizes the hello-world-v1.steps template under the hood.",
+  "parameters": {
+    "name": {
+      "description": "Name of the person to say hello to."
+    }
+  }
+}
