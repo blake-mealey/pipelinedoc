@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/github-markdown-css.css" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link rel="stylesheet" href="/assets/css/prism.css" />
+    <script src="/assets/scripts/prism.js"></script>
+    <title>hello-world-v1</title>
+  </head>
+  <body>
+    <main class="markdown-body">
+      <h1>hello-world-v1</h1>
+<p><em>Template type: <code>variable</code> <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&amp;tabs=schema%2Cparameter-schema#variable-templates">[?]</a></em></p>
+<h2>Example usage</h2>
+<p>Use template repository:</p>
+<pre><code class="language-yaml">resources:
+  repositories:
+    - repo: templates
+      name: blake-mealey/pipelinedoc
+      type: github
+</code></pre>
+<p>Insert template:</p>
+<pre><code class="language-yaml">variables:
+  - template: hello-world-v1.variables.yml@templates
+</code></pre>
+
+    </main>
+  </body>
+</html>

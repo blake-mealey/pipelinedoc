@@ -43,12 +43,12 @@ export function getParameterList(
 
 export function getTemplateType(template: Template) {
   return template.steps
-    ? 'steps'
+    ? 'step'
     : template.jobs
-    ? 'jobs'
+    ? 'job'
     : template.stages
-    ? 'stages'
+    ? 'stage'
     : template.variables
-    ? 'variables'
+    ? 'variable'
     : undefined;
 }

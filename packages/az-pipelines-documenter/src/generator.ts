@@ -43,7 +43,12 @@ function generateDeprecatedWarning(meta: TemplateMetaData) {
 function generateTemplateType(template: Template) {
   const templateType = getTemplateType(template);
 
-  return maybe(templateType, italics(`Template type: ${code(templateType)}`));
+  const docsLink = `https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema#${templateType}-templates`;
+
+  return maybe(
+    templateType,
+    italics(`Template type: ${code(templateType)} [[?]](${docsLink})`)
+  );
 }
 
 function generateDescription(meta: TemplateMetaData) {
@@ -80,7 +85,7 @@ function generateUsage(
   }
 
   const insertTemplateGenerators: Record<typeof templateType, () => string> = {
-    steps: () =>
+    step: () =>
       yamlBlock({
         jobs: [
           {
@@ -89,15 +94,15 @@ function generateUsage(
           },
         ],
       }),
-    jobs: () =>
+    job: () =>
       yamlBlock({
         jobs: [{ template: templatePath, parameters }],
       }),
-    stages: () =>
+    stage: () =>
       yamlBlock({
         stages: [{ template: templatePath, parameters }],
       }),
-    variables: () =>
+    variable: () =>
       yamlBlock({
         variables: [{ template: templatePath, parameters }],
       }),
