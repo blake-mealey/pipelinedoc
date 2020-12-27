@@ -3,7 +3,7 @@ import {
   generate,
   GenerateOptions,
   RepoMetaData,
-  TemplateMetaData,
+  TemplateMetaData
 } from 'az-pipelines-documenter';
 import { glob } from 'glob';
 import { promisify } from 'util';
@@ -18,7 +18,7 @@ module.exports = {
   run: async (toolbox: GluegunToolbox) => {
     const {
       parameters: { array: patterns, options },
-      filesystem: { writeAsync, readAsync },
+      filesystem: { writeAsync, readAsync, path }
     } = toolbox;
 
     async function getGitUrl() {
@@ -43,12 +43,12 @@ module.exports = {
         'dev.azure.com': 'git',
         'visualstudio.com': 'git',
         'github.com': 'github',
-        'bitbucket.org': 'bitbucket',
+        'bitbucket.org': 'bitbucket'
       };
 
       return {
         name: `${gitUrl.owner}/${gitUrl.name}`,
-        type: sourceToType[gitUrl.source],
+        type: sourceToType[gitUrl.source]
       } as RepoMetaData;
     }
 
@@ -57,23 +57,23 @@ module.exports = {
 
     const files = (
       await Promise.all(
-        patterns.map((pattern) =>
+        patterns.map(pattern =>
           globAsync(pattern, {
-            ignore: ['node_modules', '.git'],
+            ignore: ['node_modules', '.git']
           })
         )
       )
     ).flat();
 
     const generateOptions: Partial<GenerateOptions> = {
-      headingDepth: 2,
+      headingDepth: 1
     };
 
     const meta: Partial<TemplateMetaData> = {
       repo: {
         ...repoDetails,
-        identifier: options.repoIdentifier ?? 'templates',
-      },
+        identifier: options.repoIdentifier ?? 'templates'
+      }
     };
 
     function getDescriptionFromYamlCommentBlock(data: string) {
@@ -88,27 +88,25 @@ module.exports = {
       return blockLines.length > 0 ? blockLines.join('\n') : undefined;
     }
 
-    const templateDocs = await Promise.all(
+    const outputDir = options.out ?? './docs';
+
+    await Promise.all(
       files
-        .filter((file) => file.endsWith('.yml') || file.endsWith('yaml'))
-        .map(async (file) => {
+        .filter(file => file.endsWith('.yml') || file.endsWith('yaml'))
+        .map(async file => {
           const data = await readAsync(file);
-          return generate(
+          const markdown = generate(
             data,
             {
               ...meta,
               name: basename(file, file.substring(file.indexOf('.'))),
               description: getDescriptionFromYamlCommentBlock(data),
-              filePath: file,
+              filePath: file
             },
             generateOptions
           );
+          await writeAsync(path(outputDir, `${file}.md`), markdown);
         })
     );
-
-    await writeAsync(
-      'docs.md',
-      `# ${options.projectName ?? gitUrl.name}\n\n` + templateDocs.join('\n')
-    );
-  },
+  }
 };
