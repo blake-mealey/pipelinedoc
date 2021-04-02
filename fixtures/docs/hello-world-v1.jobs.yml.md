@@ -2,7 +2,9 @@
 
 _Template type: `jobs`_
 
-A job which says "Hello" to the provided name (defaults to "World"). Utilizes the hello-world-v1.steps template under the hood.
+A job which says "Hello" to the provided name (defaults to "World"). Utilizes the
+hello-world-v1.steps template under the hood.
+
 
 ## Example usage
 

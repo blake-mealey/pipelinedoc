@@ -102,7 +102,7 @@ module.exports = {
       }
     };
 
-    const outputDir = options.out ?? './docs';
+    const outputDir = options.outDir ?? options.o ?? './docs';
 
     function assertValidProperty(
       fileName: string,
@@ -181,10 +181,31 @@ module.exports = {
       });
     }
 
+    function getPropertiesFile(file: string) {
+      const extensions = ['yml', 'yaml', 'json'];
+      const baseName = file.substring(0, file.lastIndexOf('.'));
+      for (const ext of extensions) {
+        const propertiesFile = baseName + `.properties.${ext}`;
+        if (exists(propertiesFile) === 'file') {
+          return propertiesFile;
+        }
+      }
+
+      trackWarning(
+        `Missing properties file ${underline(
+          baseName + '.properties.(yml|yaml|json)'
+        )} for template ${underline(file)}`
+      );
+    }
+
     try {
       await Promise.all(
         files
-          .filter(file => file.endsWith('.yml') || file.endsWith('yaml'))
+          .filter(
+            file =>
+              (file.endsWith('.yml') && !file.endsWith('.properties.yml')) ||
+              (file.endsWith('yaml') && !file.endsWith('.properties.yaml'))
+          )
           .map(async file => {
             const data = await readAsync(file);
 
@@ -203,14 +224,17 @@ module.exports = {
               );
             }
 
-            const propertiesFile =
-              file.substring(0, file.lastIndexOf('.')) + '.properties.json';
-            if (exists(propertiesFile) === 'file') {
+            const propertiesFile = getPropertiesFile(file);
+            if (propertiesFile) {
               let fromFile: any | undefined;
               try {
-                fromFile = JSON.parse(await readAsync(propertiesFile));
+                fromFile = parseYaml(await readAsync(propertiesFile));
               } catch (e) {
-                throw new Error(`Failed to load properties file ${underline(propertiesFile)}:\n${e.message}`);
+                throw new Error(
+                  `Failed to load properties file ${underline(
+                    propertiesFile
+                  )}:\n${e.message}`
+                );
               }
               properties = {
                 name: fromFile.name,
@@ -232,12 +256,6 @@ module.exports = {
               ]);
 
               assertValidParameters(file, propertiesFile, properties, template);
-            } else {
-              trackWarning(
-                `Missing properties file ${underline(
-                  propertiesFile
-                )} for template ${underline(file)}`
-              );
             }
 
             const markdown = generate(
