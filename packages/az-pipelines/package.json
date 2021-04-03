@@ -67,5 +67,8 @@
     "git-url-parse": "^11.4.3",
     "js-yaml": "^3.14.1",
     "simple-git": "^2.31.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
