@@ -1,8 +1,7 @@
 {
   "name": "pipelinedoc",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "description": "CLI for generating docs from Azure Pipelines YAML templates",
-  "private": true,
   "types": "build/types/types.d.ts",
   "bin": {
     "pipelinedoc": "bin/pipelinedoc"
