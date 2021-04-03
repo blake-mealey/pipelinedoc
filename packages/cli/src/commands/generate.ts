@@ -4,9 +4,9 @@ import {
   GenerateOptions,
   RepoMetaData,
   Template,
-  TemplateMetaData
+  TemplateMetaData,
+  getParameterList
 } from '@pipelinedoc/az-pipelines';
-import { getParameterList } from '@pipelinedoc/az-pipelines/src/utils/templates';
 import { glob } from 'glob';
 import { promisify } from 'util';
 import { basename } from 'path';
@@ -131,6 +131,7 @@ module.exports = {
       }
     }
 
+    // TODO: Move into @pipelinedoc/az-pipelines
     function assertValidParameters(
       templateFileName: string,
       propertiesFileName: string,
