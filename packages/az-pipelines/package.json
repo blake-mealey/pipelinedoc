@@ -32,7 +32,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "az-pipelines-documenter",
+  "name": "@pipelinedoc/az-pipelines",
   "author": "Blake Mealey",
   "module": "dist/az-pipelines-documenter.esm.js",
   "size-limit": [

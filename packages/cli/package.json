@@ -1,5 +1,5 @@
 {
-  "name": "pipelinedoc",
+  "name": "@pipelinedoc/cli",
   "version": "0.0.0-development",
   "description": "CLI for generating docs from Azure Pipelines YAML templates",
   "types": "build/types/types.d.ts",
@@ -31,7 +31,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "az-pipelines-documenter": "^0.0.0-development",
+    "@pipelinedoc/az-pipelines": "^0.0.0-development",
     "glob": "^7.1.6",
     "gluegun": "latest"
   },
