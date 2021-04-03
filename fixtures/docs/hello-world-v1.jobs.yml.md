@@ -1,4 +1,6 @@
-# Hello World Stages (v1)
+# Hello World Jobs (v1)
+
+**_⚠ DEPRECATED: Use the stage version instead ⚠_**
 
 _Template type: `jobs`_
 

@@ -2,7 +2,9 @@
 
 _Template type: `stages`_
 
-A stage which says "Hello" to the provided name (defaults to "World"). Utilizes the hello-world-v1.jobs template under the hood.
+A stage which says "Hello" to the provided name (defaults to "World"). Utilizes the
+hello-world-v1.jobs template under the hood.
+
 
 ## Example usage
 

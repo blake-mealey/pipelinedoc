@@ -108,16 +108,21 @@ module.exports = {
       fileName: string,
       properties: Partial<TemplateMetaData>,
       property: keyof TemplateMetaData,
-      type: string | string[]
+      type: string | string[],
+      required = true
     ) {
       type = Array.isArray(type) ? type : [type];
-      if (!properties[property]) {
+      const propertyValue = properties[property];
+      if (required && !propertyValue === undefined) {
         trackWarning(
           `Missing property '${property}' in properties file ${underline(
             fileName
           )}`
         );
-      } else if (!type.includes(typeof properties[property])) {
+      } else if (
+        propertyValue !== undefined &&
+        !type.includes(typeof propertyValue)
+      ) {
         trackWarning(
           `Property '${property}' is incorrect type (expected ${type.join(
             '|'
@@ -239,8 +244,10 @@ module.exports = {
               properties = {
                 name: fromFile.name,
                 description: fromFile.description,
-                parameters: fromFile.parameters,
-                version: fromFile.version
+                version: fromFile.version,
+                deprecated: fromFile.deprecated ?? !!fromFile.deprecatedWarning,
+                deprecatedWarning: fromFile.deprecatedWarning,
+                parameters: fromFile.parameters
               };
 
               assertValidProperty(propertiesFile, properties, 'name', 'string');
@@ -254,6 +261,20 @@ module.exports = {
                 'string',
                 'number'
               ]);
+              assertValidProperty(
+                propertiesFile,
+                properties,
+                'deprecated',
+                'boolean',
+                false
+              );
+              assertValidProperty(
+                propertiesFile,
+                properties,
+                'deprecatedWarning',
+                'string',
+                false
+              );
 
               assertValidParameters(file, propertiesFile, properties, template);
             }

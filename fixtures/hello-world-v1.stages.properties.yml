@@ -5,4 +5,4 @@ description: |
   hello-world-v1.jobs template under the hood.
 parameters:
   name:
-    description: Name of the person to say hello to
+    description: Name of the person to say hello to.

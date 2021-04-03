@@ -45,8 +45,14 @@ function generateHeading(meta: TemplateMetaData, options: GenerateOptions) {
 
 function generateDeprecatedWarning(meta: TemplateMetaData) {
   return maybe(
-    meta.deprecatedWarning,
-    bold(italics(`⚠ DEPRECATED: ${meta.deprecatedWarning} ⚠`))
+    meta.deprecated,
+    bold(
+      italics(
+        meta.deprecatedWarning
+          ? `⚠ DEPRECATED: ${meta.deprecatedWarning} ⚠`
+          : `⚠ DEPRECATED ⚠`
+      )
+    )
   );
 }
 
