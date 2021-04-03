@@ -14,7 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - run: yarn workspaces run release
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Release with semantic-release
+        run: yarn workspaces run release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
