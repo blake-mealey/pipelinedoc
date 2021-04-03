@@ -31,7 +31,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "az-pipelines-documenter": "0.1.0",
+    "az-pipelines-documenter": "^0.0.0-development",
     "glob": "^7.1.6",
     "gluegun": "latest"
   },
