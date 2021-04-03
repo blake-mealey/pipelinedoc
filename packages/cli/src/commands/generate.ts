@@ -5,8 +5,8 @@ import {
   RepoMetaData,
   Template,
   TemplateMetaData
-} from 'az-pipelines-documenter';
-import { getParameterList } from 'az-pipelines-documenter/src/utils/templates';
+} from '@pipelinedoc/az-pipelines';
+import { getParameterList } from '@pipelinedoc/az-pipelines/src/utils/templates';
 import { glob } from 'glob';
 import { promisify } from 'util';
 import { basename } from 'path';
