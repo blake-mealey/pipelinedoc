@@ -12,7 +12,7 @@ import { promisify } from 'util';
 import { basename } from 'path';
 import simpleGit from 'simple-git/promise';
 import GitUrlParse from 'git-url-parse';
-import { safeLoad as parseYaml } from 'js-yaml';
+import yaml from 'js-yaml';
 import { heading, link, unorderedList } from '../az-pipelines/utils/markdown';
 
 const globAsync = promisify(glob);
@@ -221,7 +221,7 @@ module.exports = {
 
             let template: Template | undefined;
             try {
-              template = parseYaml(data) as Template;
+              template = yaml.load(data) as Template;
             } catch (e) {
               throw new Error(
                 `Failed to parse YAML of template ${underline(file)}:\n${
@@ -234,7 +234,7 @@ module.exports = {
             if (propertiesFile) {
               let fromFile: any | undefined;
               try {
-                fromFile = parseYaml(await readAsync(propertiesFile));
+                fromFile = yaml.load(await readAsync(propertiesFile));
               } catch (e) {
                 throw new Error(
                   `Failed to load properties file ${underline(
