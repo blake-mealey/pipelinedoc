@@ -11,6 +11,7 @@
     "lint": "tslint -p .",
     "clean-build": "rm -rf ./build",
     "compile": "tsc -p .",
+    "compile:watch": "tsc -p . -w",
     "copy-templates": "if [ -e ./src/templates ]; then cp -a ./src/templates ./build/; fi",
     "build": "yarn format && yarn lint && yarn clean-build && yarn compile && yarn copy-templates",
     "prepublishOnly": "yarn build",
@@ -31,9 +32,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@pipelinedoc/az-pipelines": ">=0.0.0-development",
+    "git-url-parse": "^11.4.4",
     "glob": "^7.1.6",
-    "gluegun": "latest"
+    "gluegun": "latest",
+    "simple-git": "^2.37.0"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",
@@ -42,7 +44,6 @@
     "jest": "^24.1.0",
     "prettier": "^1.12.1",
     "semantic-release": "^17.4.2",
-    "semantic-release-monorepo": "^7.0.4",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
     "tslint": "^5.12.0",

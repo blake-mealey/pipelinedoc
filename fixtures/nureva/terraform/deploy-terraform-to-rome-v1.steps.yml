@@ -1,0 +1,29 @@
+parameters:
+  - name: envName
+    displayName: Environment Name Abbreviation
+    type: string
+    values:
+      - sbox
+      - dev
+      - test
+      - prod
+
+extends:
+  template: ./deploy-terraform-v1.steps.yml
+  parameters:
+    ${{ if eq(parameters.envName, 'sbox') }}:
+      azureSubscription: Nureva_Sandbox
+      stateStorageResourceGroup: AzureDevopsBuildResources
+      stateStorageAccount: buildresources3089531191
+    ${{ if eq(parameters.envName, 'dev') }}:
+      azureSubscription: Rome-Dev
+      stateStorageResourceGroup: AzureDevopsBuildResources
+      stateStorageAccount: buildresources4568713258
+    ${{ if eq(parameters.envName, 'test') }}:
+      azureSubscription: Rome-Dev
+      stateStorageResourceGroup: AzureDevopsBuildResources
+      stateStorageAccount: buildresources4568713258
+    ${{ if eq(parameters.envName, 'prod') }}:
+      azureSubscription: Rome-Prod
+      stateStorageResourceGroup: AzureDevopsBuildResources
+      stateStorageAccount: buildresources9839521334

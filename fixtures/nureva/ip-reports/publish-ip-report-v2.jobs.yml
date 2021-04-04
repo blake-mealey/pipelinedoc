@@ -1,0 +1,55 @@
+# Publishes an IP report to a blob in a project's storage container
+
+parameters:
+  - name: azureSubscription
+    displayName: Azure Subscription
+    type: string
+  - name: storageAccount
+    displayName: Storage account name
+    type: string
+  - name: projectDisplayName
+    displayName: Display name of the project
+    type: string
+  - name: containerName
+    displayName: Storage container name
+    type: string
+    default: ip-reports
+  - name: dependsOn
+    displayName: Depends on job name(s)
+    type: string
+    default: ''
+  - name: condition
+    displayName: The condition that the job will run on
+    type: string
+    default: ''
+  - name: artifactName
+    displayName: IP Report artifact name
+    type: string
+    default: IP_Report
+
+jobs:
+  - job: publish_ip_report
+    pool:
+      name: Nureva-AzureWinBuildPool
+      demands: DistributionServerWhitelisted
+    displayName: Publish IP Report
+    dependsOn: ${{ parameters.dependsOn }}
+    condition: ${{ parameters.condition }}
+    variables:
+      reportDir: $(Pipeline.Workspace)/${{ parameters.artifactName }}
+    steps:
+      - download: current
+        artifact: ${{ parameters.artifactName }}
+        displayName: Download IP report
+
+      - task: AzureCLI@2
+        displayName: Publish IP report
+        inputs:
+          azureSubscription: ${{ parameters.azureSubscription }}
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            az storage container create --account-name ${{ parameters.storageAccount }} --name ${{ parameters.containerName }} --auth-mode key
+            az storage container set-permission --public-access blob --account-name ${{ parameters.storageAccount }} --name ${{ parameters.containerName }} --auth-mode key
+            $fileName = Get-ChildItem $(reportDir) -Name -File -Include *.html | Select-Object -First 1
+            az storage blob upload --file $(reportDir)/$fileName --name "${{ parameters.projectDisplayName }}.html" --account-name ${{ parameters.storageAccount }} --container-name ${{ parameters.containerName }} --auth-mode key
