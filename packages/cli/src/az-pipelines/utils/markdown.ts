@@ -10,6 +10,10 @@ export function heading(text: string, depth: number) {
   );
 }
 
+export function unorderedList(items: string[]) {
+  return items.map(item => '- ' + item).join('\n');
+}
+
 export function table([header, ...rows]: string[][]) {
   const formatRow = (row: string[]) => `|${row.join('|')}|\n`;
   return (
@@ -17,6 +21,10 @@ export function table([header, ...rows]: string[][]) {
     formatRow(header.map(() => '---')) +
     rows.map(formatRow).join('')
   );
+}
+
+export function link(text: string, href: string) {
+  return `[${text}](${href})`;
 }
 
 export function code(text?: string) {
