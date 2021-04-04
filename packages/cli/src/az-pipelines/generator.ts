@@ -157,6 +157,10 @@ function generateParameters(
     return [];
   }
 
+  function value(value: any) {
+    return code(JSON.stringify(value));
+  }
+
   return [
     heading('Parameters', options.headingDepth + 1),
     table([
@@ -174,11 +178,9 @@ function generateParameters(
           ].join(' '),
           [
             maybe(param.type, code(param.type)),
-            maybe(paramMeta?.format, `(${code(paramMeta?.format)})`)
+            maybe(param.values, `(${param.values?.map(value)?.join(' \\| ')})`)
           ].join(' '),
-          [maybe(isRequired, 'N/A', code(JSON.stringify(param.default)))].join(
-            ' '
-          ),
+          [maybe(isRequired, 'N/A', value(param.default))].join(' '),
           [maybe(paramMeta?.description, undefined, 'TODO')].join(' ')
         ];
       })
