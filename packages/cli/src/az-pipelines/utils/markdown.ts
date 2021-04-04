@@ -1,4 +1,4 @@
-import { safeDump as stringifyYaml } from 'js-yaml';
+import yaml from 'js-yaml';
 
 export function heading(text: string, depth: number) {
   return (
@@ -38,7 +38,7 @@ export function codeBlock(lang: string, text: string) {
 export function yamlBlock(yamlObject: any) {
   return codeBlock(
     'yaml',
-    stringifyYaml(yamlObject, {
+    yaml.dump(yamlObject, {
       skipInvalid: true
     })
   );

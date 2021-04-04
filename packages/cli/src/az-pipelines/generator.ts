@@ -1,4 +1,4 @@
-import { safeLoad as parseYaml } from 'js-yaml';
+import yaml from 'js-yaml';
 import {
   heading,
   table,
@@ -175,7 +175,7 @@ export function generate(
   meta: TemplateMetaData,
   options?: Partial<GenerateOptions>
 ) {
-  const template = parseYaml(data) as Template;
+  const template = yaml.load(data) as Template;
 
   const fullOptions: GenerateOptions = {
     headingDepth: options?.headingDepth ?? 1
