@@ -168,9 +168,9 @@ function generateParameters(
         const isRequired = requiredParameter(param);
         return [
           [
-            maybe(param.displayName),
-            maybe(param.name, `(${code(param.name)})`),
-            maybe(isRequired, ' (required)')
+            maybe(param.name, code(param.name)),
+            maybe(isRequired, bold('\\*')),
+            maybe(param.displayName, '<br/>' + param.displayName)
           ].join(' '),
           [
             maybe(param.type, code(param.type)),
