@@ -95,29 +95,11 @@ function generateUsage(
     );
   }
 
-  const insertTemplateGenerators: Record<typeof templateType, () => string> = {
-    steps: () =>
-      yamlBlock({
-        jobs: [
-          {
-            job: 'my_job',
-            steps: [{ template: templatePath, parameters }]
-          }
-        ]
-      }),
-    jobs: () =>
-      yamlBlock({
-        jobs: [{ template: templatePath, parameters }]
-      }),
-    stages: () =>
-      yamlBlock({
-        stages: [{ template: templatePath, parameters }]
-      }),
-    variables: () =>
-      yamlBlock({
-        variables: [{ template: templatePath, parameters }]
-      })
-  };
+  function insertTemplateGenerator(type: typeof templateType) {
+    return yamlBlock({
+      [type]: [{ template: templatePath, parameters }]
+    });
+  }
 
   let templateRepoUsage: string[] | undefined;
   if (meta.repo) {
@@ -142,7 +124,7 @@ function generateUsage(
     heading('Example usage', options.headingDepth + 1),
     ...maybe(templateRepoUsage),
     'Insert template:',
-    insertTemplateGenerators[templateType]()
+    insertTemplateGenerator(templateType)
   ];
 }
 
