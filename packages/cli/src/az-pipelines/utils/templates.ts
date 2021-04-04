@@ -2,7 +2,7 @@ import {
   TemplateParameter,
   TemplateParameters,
   TemplateParameterType,
-  Template,
+  Template
 } from '../interfaces';
 
 export function requiredParameter(parameter: TemplateParameter) {
@@ -37,7 +37,7 @@ export function getParameterList(
     : Object.entries(parameters).map(([key, value]) => ({
         name: key,
         default: value,
-        type: guessType(value),
+        type: guessType(value)
       }));
 }
 

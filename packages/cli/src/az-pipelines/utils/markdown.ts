@@ -31,7 +31,7 @@ export function yamlBlock(yamlObject: any) {
   return codeBlock(
     'yaml',
     stringifyYaml(yamlObject, {
-      skipInvalid: true,
+      skipInvalid: true
     })
   );
 }

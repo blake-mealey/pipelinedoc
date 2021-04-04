@@ -1,0 +1,31 @@
+# Installs modules from a remote NuGet repository
+
+parameters:
+  - name: modules
+    displayName: Modules
+    type: object
+  - name: artifactsEndpoint
+    displayName: Azure DevOps Artifacts Endpoint
+    type: string
+    default: https://nureva.pkgs.visualstudio.com/_packaging/Nureva
+  - name: repositoryName
+    displayName: Repository Name
+    type: string
+    default: Nureva
+
+steps:
+  - task: NuGetToolInstaller@1
+    inputs:
+      checkLatest: true
+
+  - task: NuGetAuthenticate@0
+    displayName: NuGet Authenticate
+
+  - pwsh: |
+      Register-PSRepository -Name "${{ parameters.repositoryName }}" -SourceLocation "${{ parameters.artifactsEndpoint }}/nuget/v2" -InstallationPolicy Trusted -Credential $(New-Object System.Management.Automation.PSCredential ("nousername", (ConvertTo-SecureString -String "$(System.AccessToken)" -AsPlainText -Force)) )
+    displayName: Register Nuget Feed as PSRepository
+
+  - pwsh: |
+      Install-Module -Name ${{ join(',', parameters.modules) }} -Repository "${{ parameters.repositoryName }}" -Credential $(New-Object System.Management.Automation.PSCredential ("nousername", (ConvertTo-SecureString -String "$(System.AccessToken)" -AsPlainText -Force)) );
+      Get-Module -ListAvailable -Name ${{ join(',', parameters.modules) }}
+    displayName: Install PowerShell Modules

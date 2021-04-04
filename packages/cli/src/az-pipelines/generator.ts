@@ -5,13 +5,13 @@ import {
   code,
   yamlBlock,
   bold,
-  italics,
+  italics
 } from './utils/markdown';
 import { TemplateMetaData, GenerateOptions, Template } from './interfaces';
 import {
   getParameterList,
   getTemplateType,
-  requiredParameter,
+  requiredParameter
 } from './utils/templates';
 
 function maybe(condition: any, value?: any, otherwise?: any) {
@@ -90,7 +90,7 @@ function generateUsage(
     parameters = Object.fromEntries(
       parameterList.map((param): [string, string] => [
         param.name ?? '',
-        param.type ?? '',
+        param.type ?? ''
       ])
     );
   }
@@ -101,22 +101,22 @@ function generateUsage(
         jobs: [
           {
             job: 'my_job',
-            steps: [{ template: templatePath, parameters }],
-          },
-        ],
+            steps: [{ template: templatePath, parameters }]
+          }
+        ]
       }),
     jobs: () =>
       yamlBlock({
-        jobs: [{ template: templatePath, parameters }],
+        jobs: [{ template: templatePath, parameters }]
       }),
     stages: () =>
       yamlBlock({
-        stages: [{ template: templatePath, parameters }],
+        stages: [{ template: templatePath, parameters }]
       }),
     variables: () =>
       yamlBlock({
-        variables: [{ template: templatePath, parameters }],
-      }),
+        variables: [{ template: templatePath, parameters }]
+      })
   };
 
   let templateRepoUsage: string[] | undefined;
@@ -130,11 +130,11 @@ function generateUsage(
               repo: meta.repo.identifier,
               name: meta.repo.name,
               ref: meta.repo.ref,
-              type: meta.repo.type,
-            },
-          ],
-        },
-      }),
+              type: meta.repo.type
+            }
+          ]
+        }
+      })
     ];
   }
 
@@ -142,7 +142,7 @@ function generateUsage(
     heading('Example usage', options.headingDepth + 1),
     ...maybe(templateRepoUsage),
     'Insert template:',
-    insertTemplateGenerators[templateType](),
+    insertTemplateGenerators[templateType]()
   ];
 }
 
@@ -170,19 +170,19 @@ function generateParameters(
           [
             maybe(param.displayName),
             maybe(param.name, `(${code(param.name)})`),
-            maybe(isRequired, ' (required)'),
+            maybe(isRequired, ' (required)')
           ].join(' '),
           [
             maybe(param.type, code(param.type)),
-            maybe(paramMeta?.format, `(${code(paramMeta?.format)})`),
+            maybe(paramMeta?.format, `(${code(paramMeta?.format)})`)
           ].join(' '),
           [maybe(isRequired, 'N/A', code(JSON.stringify(param.default)))].join(
             ' '
           ),
-          [maybe(paramMeta?.description, undefined, 'TODO')].join(' '),
+          [maybe(paramMeta?.description, undefined, 'TODO')].join(' ')
         ];
-      }),
-    ]),
+      })
+    ])
   ];
 }
 
@@ -194,7 +194,7 @@ export function generate(
   const template = parseYaml(data) as Template;
 
   const fullOptions: GenerateOptions = {
-    headingDepth: options?.headingDepth ?? 1,
+    headingDepth: options?.headingDepth ?? 1
   };
 
   const lines: (string | undefined)[] = [
@@ -203,7 +203,7 @@ export function generate(
     ...generateTemplateType(template),
     ...generateDescription(meta),
     ...generateUsage(template, meta, fullOptions),
-    ...generateParameters(template, meta, fullOptions),
+    ...generateParameters(template, meta, fullOptions)
   ];
 
   return lines.join('\n\n');
