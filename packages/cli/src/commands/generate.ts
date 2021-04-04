@@ -13,6 +13,7 @@ import { basename } from 'path';
 import simpleGit from 'simple-git/promise';
 import GitUrlParse from 'git-url-parse';
 import { safeLoad as parseYaml } from 'js-yaml';
+import { heading, link, unorderedList } from '../az-pipelines/utils/markdown';
 
 const globAsync = promisify(glob);
 
@@ -204,7 +205,7 @@ module.exports = {
     }
 
     try {
-      await Promise.all(
+      const results = await Promise.all(
         files
           .filter(
             file =>
@@ -289,8 +290,19 @@ module.exports = {
               generateOptions
             );
             await writeAsync(path(outputDir, `${file}.md`), markdown);
+
+            return {
+              file
+            };
           })
       );
+
+      const indexFile = path(outputDir, 'index.md');
+      const markdown = [
+        heading('Pipeline Docs', 1),
+        unorderedList(results.map(x => link(x.file, `${x.file}.md`)))
+      ].join('\n\n');
+      await writeAsync(indexFile, markdown);
     } catch (e) {
       trackError(e.message);
     }
