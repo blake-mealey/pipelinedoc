@@ -6,13 +6,13 @@ import {
   yamlBlock,
   bold,
   italics,
-  comment
+  comment,
 } from './utils/markdown';
 import { TemplateMetaData, GenerateOptions, Template } from './interfaces';
 import {
   getParameterList,
   getTemplateType,
-  requiredParameter
+  requiredParameter,
 } from './utils/templates';
 
 function maybe(condition: any, value?: any, otherwise?: any) {
@@ -91,14 +91,14 @@ function generateUsage(
     parameters = Object.fromEntries(
       parameterList.map((param): [string, string] => [
         param.name ?? '',
-        param.type ?? ''
+        param.type ?? '',
       ])
     );
   }
 
   function insertTemplateGenerator(type: typeof templateType) {
     return yamlBlock({
-      [type]: [{ template: templatePath, parameters }]
+      [type]: [{ template: templatePath, parameters }],
     });
   }
 
@@ -113,11 +113,11 @@ function generateUsage(
               repo: meta.repo.identifier,
               name: meta.repo.name,
               ref: meta.repo.ref,
-              type: meta.repo.type
-            }
-          ]
-        }
-      })
+              type: meta.repo.type,
+            },
+          ],
+        },
+      }),
     ];
   }
 
@@ -125,7 +125,7 @@ function generateUsage(
     heading('Example usage', options.headingDepth + 1),
     ...maybe(templateRepoUsage),
     'Insert template:',
-    insertTemplateGenerator(templateType)
+    insertTemplateGenerator(templateType),
   ];
 }
 
@@ -148,7 +148,7 @@ function generateParameters(
     heading('Parameters', options.headingDepth + 1),
     table([
       ['Parameter', 'Type', 'Default', 'Description'],
-      ...parameterList.map(param => {
+      ...parameterList.map((param) => {
         const paramMeta = param.name
           ? parameterMeta(meta, param.name)
           : undefined;
@@ -157,17 +157,17 @@ function generateParameters(
           [
             maybe(param.name, code(param.name)),
             maybe(isRequired, bold('\\*')),
-            maybe(param.displayName, '\n' + param.displayName)
+            maybe(param.displayName, '<br/>' + param.displayName),
           ].join(''),
           [
             maybe(param.type, code(param.type)),
-            maybe(param.values, `(${param.values?.map(value)?.join(' \\| ')})`)
+            maybe(param.values, `(${param.values?.map(value)?.join(' \\| ')})`),
           ].join(' '),
           [maybe(isRequired, 'N/A', value(param.default))].join(' '),
-          [maybe(paramMeta?.description, undefined, 'TODO')].join(' ')
+          [maybe(paramMeta?.description, undefined, 'TODO')].join(' '),
         ];
-      })
-    ])
+      }),
+    ]),
   ];
 }
 
@@ -179,7 +179,7 @@ export function generate(
   const template = yaml.load(data) as Template;
 
   const fullOptions: GenerateOptions = {
-    headingDepth: options?.headingDepth ?? 1
+    headingDepth: options?.headingDepth ?? 1,
   };
 
   const lines: (string | undefined)[] = [
@@ -189,7 +189,7 @@ export function generate(
     ...generateTemplateType(template),
     ...generateDescription(meta),
     ...generateUsage(template, meta, fullOptions),
-    ...generateParameters(template, meta, fullOptions)
+    ...generateParameters(template, meta, fullOptions),
   ];
 
   return lines.join('\n\n');
