@@ -33,13 +33,13 @@ module.exports = {
     if (options.watch || options.w) {
       info('Watching for changes...');
       const watcher = watch(patterns);
-      watcher.on('add', file => {
+      watcher.on('add', async file => {
         info('File added: ', file);
-        generateDocs([file], generateOptions, repoMeta, outputDir);
+        await generateDocs([file], generateOptions, repoMeta, outputDir);
       });
-      watcher.on('change', file => {
+      watcher.on('change', async file => {
         info('File changed: ', file);
-        generateDocs([file], generateOptions, repoMeta, outputDir);
+        await generateDocs([file], generateOptions, repoMeta, outputDir);
       });
     } else {
       const files = (
