@@ -15,7 +15,8 @@ export function unorderedList(items: string[]) {
 }
 
 export function table([header, ...rows]: string[][]) {
-  const formatRow = (row: string[]) => `|${row.join('|')}|\n`;
+  const formatCell = (cell: string) => cell.replace(/\n/g, '<br/>');
+  const formatRow = (row: string[]) => `|${row.map(formatCell).join('|')}|\n`;
   return (
     formatRow(header) +
     formatRow(header.map(() => '---')) +
