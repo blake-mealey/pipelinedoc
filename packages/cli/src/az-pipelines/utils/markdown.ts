@@ -51,3 +51,7 @@ export function bold(text: string) {
 export function italics(text: string) {
   return `_${text}_`;
 }
+
+export function comment(text: string) {
+  return `<!-- ${text} -->`;
+}
