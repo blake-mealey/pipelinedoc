@@ -2,6 +2,8 @@ import { GluegunToolbox } from 'gluegun';
 import { GenerateOptions, TemplateMetaData } from '../az-pipelines';
 import { glob } from 'glob';
 import { promisify } from 'util';
+import { info } from 'console';
+import { watch } from 'chokidar';
 
 const globAsync = promisify(glob);
 
@@ -15,21 +17,11 @@ module.exports = {
 
     const repoDetails = await getRepoDetails();
 
-    const files = (
-      await Promise.all(
-        patterns.map(pattern =>
-          globAsync(pattern, {
-            ignore: ['node_modules', '.git']
-          })
-        )
-      )
-    ).flat();
-
     const generateOptions: Partial<GenerateOptions> = {
       headingDepth: 1
     };
 
-    const meta: Partial<TemplateMetaData> = {
+    const repoMeta: Partial<TemplateMetaData> = {
       repo: {
         ...repoDetails,
         identifier: options.repoIdentifier ?? 'templates'
@@ -38,10 +30,33 @@ module.exports = {
 
     const outputDir = options.outDir ?? options.o ?? './docs';
 
-    await generateDocs(files, generateOptions, meta, outputDir);
+    if (options.watch || options.w) {
+      info('Watching for changes...');
+      const watcher = watch(patterns);
+      watcher.on('add', file => {
+        info('File added: ', file);
+        generateDocs([file], generateOptions, repoMeta, outputDir);
+      });
+      watcher.on('change', file => {
+        info('File changed: ', file);
+        generateDocs([file], generateOptions, repoMeta, outputDir);
+      });
+    } else {
+      const files = (
+        await Promise.all(
+          patterns.map(pattern =>
+            globAsync(pattern, {
+              ignore: ['node_modules', '.git']
+            })
+          )
+        )
+      ).flat();
 
-    if (hadErrors()) {
-      process.exit(1);
+      await generateDocs(files, generateOptions, repoMeta, outputDir);
+
+      if (hadErrors()) {
+        process.exit(1);
+      }
     }
   }
 };

@@ -32,6 +32,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "chokidar": "^3.5.1",
     "git-url-parse": "^11.4.4",
     "glob": "^7.1.6",
     "gluegun": "latest",
