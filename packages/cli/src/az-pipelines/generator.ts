@@ -157,7 +157,7 @@ function generateParameters(
           [
             maybe(param.name, code(param.name)),
             maybe(isRequired, bold('\\*')),
-            maybe(param.displayName, '<br/>' + param.displayName)
+            maybe(param.displayName, '\n' + param.displayName)
           ].join(''),
           [
             maybe(param.type, code(param.type)),
