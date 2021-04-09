@@ -107,7 +107,7 @@ function generateUsage(
   const hasRequiredParam = parameterList?.some((param) =>
     requiredParameter(param)
   );
-  const hasParams = false; // (parameterList?.length ?? 0) > 0;
+  const hasParams = (parameterList?.length ?? 0) > 0;
 
   function insertTemplateGenerator(type: typeof templateType) {
     return codeBlock(
