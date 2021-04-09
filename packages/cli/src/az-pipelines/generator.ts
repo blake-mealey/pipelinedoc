@@ -92,6 +92,7 @@ function generateUsage(
   const hasRequiredParam = parameterList?.some((param) =>
     requiredParameter(param)
   );
+  const hasParams = false; // (parameterList?.length ?? 0) > 0;
 
   function insertTemplateGenerator(type: typeof templateType) {
     return codeBlock(
@@ -99,9 +100,12 @@ function generateUsage(
       [
         `${type}:`,
         indent(2, `- template: ${templatePath}`),
-        hasRequiredParam
-          ? indent(4, 'parameters:')
-          : indent(4, '# parameters:'),
+        ...maybe(
+          hasParams,
+          hasRequiredParam
+            ? indent(4, 'parameters:')
+            : indent(4, '# parameters:')
+        ),
         ...(parameterList?.map((param) => {
           if (requiredParameter(param)) {
             return indent(6, `${param.name}: ${param.type}`);

@@ -8,13 +8,13 @@ import {
   TemplateMetaData,
   Template,
   getParameterList,
-  generate
+  generate,
 } from '../az-pipelines';
 import {
   heading,
   unorderedList,
   link,
-  comment
+  comment,
 } from '../az-pipelines/utils/markdown';
 import yaml from 'js-yaml';
 
@@ -27,7 +27,7 @@ export function trackWarning(toolbox: GluegunToolbox, message: string) {
   const {
     parameters: { options },
     print: { warning },
-    doc: { trackError }
+    doc: { trackError },
   } = toolbox;
 
   if (options.strict) {
@@ -39,7 +39,7 @@ export function trackWarning(toolbox: GluegunToolbox, message: string) {
 
 export function trackError(toolbox: GluegunToolbox, message: string) {
   const {
-    print: { error }
+    print: { error },
   } = toolbox;
 
   error(`ERR:  ` + padMessage(message));
@@ -63,7 +63,7 @@ export async function getGitUrl() {
 
 export async function getRepoDetails(toolbox: GluegunToolbox) {
   const {
-    doc: { getGitUrl }
+    doc: { getGitUrl },
   } = toolbox;
 
   const gitUrl = await getGitUrl();
@@ -77,12 +77,12 @@ export async function getRepoDetails(toolbox: GluegunToolbox) {
     'dev.azure.com': 'git',
     'visualstudio.com': 'git',
     'github.com': 'github',
-    'bitbucket.org': 'bitbucket'
+    'bitbucket.org': 'bitbucket',
   };
 
   return {
     name: `${gitUrl.owner}/${gitUrl.name}`,
-    type: sourceToType[gitUrl.source]
+    type: sourceToType[gitUrl.source],
   } as RepoMetaData;
 }
 
@@ -97,8 +97,8 @@ export function assertValidProperty(
   const {
     doc: { trackWarning },
     print: {
-      colors: { underline }
-    }
+      colors: { underline },
+    },
   } = toolbox;
 
   type = Array.isArray(type) ? type : [type];
@@ -129,13 +129,13 @@ export function assertValidParameters(
   const {
     doc: { trackWarning, assertValidProperty },
     print: {
-      colors: { underline }
-    }
+      colors: { underline },
+    },
   } = toolbox;
 
   const parametersList = getParameterList(template.parameters);
 
-  if (parametersList.length > 0) {
+  if (parametersList?.length > 0) {
     assertValidProperty(propertiesFileName, properties, 'parameters', 'object');
   }
 
@@ -144,7 +144,7 @@ export function assertValidParameters(
     : undefined;
 
   parametersMeta?.forEach(([name, meta]) => {
-    if (!parametersList.some(param => param.name === name)) {
+    if (!parametersList?.some((param) => param.name === name)) {
       trackWarning(
         `Parameter '${name}' from properties file ${underline(
           propertiesFileName
@@ -182,8 +182,8 @@ export function getPropertiesFile(toolbox: GluegunToolbox, file: string) {
     filesystem: { exists },
     doc: { trackWarning },
     print: {
-      colors: { underline }
-    }
+      colors: { underline },
+    },
   } = toolbox;
 
   const extensions = ['yml', 'yaml', 'json'];
@@ -212,29 +212,29 @@ export async function generateDocs(
   const {
     filesystem: { readAsync, writeAsync, path },
     print: {
-      colors: { underline }
+      colors: { underline },
     },
     doc: {
       trackError,
       getPropertiesFile,
       assertValidProperty,
-      assertValidParameters
-    }
+      assertValidParameters,
+    },
   } = toolbox;
 
   try {
     const results = await Promise.all(
       files
         .filter(
-          file =>
+          (file) =>
             (file.endsWith('.yml') && !file.endsWith('.properties.yml')) ||
             (file.endsWith('yaml') && !file.endsWith('.properties.yaml'))
         )
-        .map(async file => {
+        .map(async (file) => {
           const data = await readAsync(file);
 
           let properties: TemplateMetaData = {
-            name: basename(file.substring(0, file.lastIndexOf('.')))
+            name: basename(file.substring(0, file.lastIndexOf('.'))),
           };
 
           let template: Template | undefined;
@@ -266,7 +266,7 @@ export async function generateDocs(
               version: fromFile.version,
               deprecated: fromFile.deprecated ?? !!fromFile.deprecatedWarning,
               deprecatedWarning: fromFile.deprecatedWarning,
-              parameters: fromFile.parameters
+              parameters: fromFile.parameters,
             };
 
             assertValidProperty(propertiesFile, properties, 'name', 'string');
@@ -278,7 +278,7 @@ export async function generateDocs(
             );
             assertValidProperty(propertiesFile, properties, 'version', [
               'string',
-              'number'
+              'number',
             ]);
             assertValidProperty(
               propertiesFile,
@@ -303,14 +303,14 @@ export async function generateDocs(
             {
               ...properties,
               ...repoMeta,
-              filePath: file
+              filePath: file,
             },
             generateOptions
           );
           await writeAsync(path(outputDir, `${file}.md`), markdown);
 
           return {
-            file
+            file,
           };
         })
     );
@@ -321,10 +321,12 @@ export async function generateDocs(
         'this file was generated by pipelinedoc - do not modify directly'
       ),
       heading('Pipeline Docs', 1),
-      unorderedList(results.map(x => link(x.file, `${x.file}.md`)))
+      unorderedList(results.map((x) => link(x.file, `${x.file}.md`))),
     ].join('\n\n');
     await writeAsync(indexFile, markdown);
   } catch (e) {
+    console.log(e);
+
     trackError(e.message);
   }
 }
