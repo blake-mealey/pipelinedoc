@@ -1,17 +1,11 @@
 import yaml from 'js-yaml';
 
 export function heading(text: string, depth: number) {
-  return (
-    Array(depth)
-      .fill('#')
-      .join('') +
-    ' ' +
-    text
-  );
+  return '#'.repeat(depth) + ' ' + text;
 }
 
 export function unorderedList(items: string[]) {
-  return items.map(item => '- ' + item).join('\n');
+  return items.map((item) => '- ' + item).join('\n');
 }
 
 export function table([header, ...rows]: string[][]) {
@@ -36,11 +30,15 @@ export function codeBlock(lang: string, text: string) {
   return '```' + `${lang}\n${text.trim()}\n` + '```';
 }
 
+export function indent(spaces: number, text: string) {
+  return ' '.repeat(spaces) + text;
+}
+
 export function yamlBlock(yamlObject: any) {
   return codeBlock(
     'yaml',
     yaml.dump(yamlObject, {
-      skipInvalid: true
+      skipInvalid: true,
     })
   );
 }
