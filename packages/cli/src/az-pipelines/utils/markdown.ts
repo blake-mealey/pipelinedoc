@@ -19,8 +19,8 @@ export function table([header, ...rows]: string[][]) {
   );
 }
 
-export function link(text: string, href: string) {
-  return `[${text}](${href})`;
+export function link(text: string, href?: string) {
+  return `[${text}](${href ?? text})`;
 }
 
 export function code(text?: string) {
