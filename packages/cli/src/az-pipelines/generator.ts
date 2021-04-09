@@ -7,6 +7,8 @@ import {
   bold,
   italics,
   comment,
+  codeBlock,
+  indent,
 } from './utils/markdown';
 import { TemplateMetaData, GenerateOptions, Template } from './interfaces';
 import {
@@ -86,20 +88,32 @@ function generateUsage(
     meta.filePath + (meta.repo ? `@${meta.repo.identifier}` : '');
 
   const parameterList = getParameterList(template.parameters);
-  let parameters: any | undefined;
-  if (parameterList) {
-    parameters = Object.fromEntries(
-      parameterList.map((param): [string, string] => [
-        param.name ?? '',
-        param.type ?? '',
-      ])
-    );
-  }
+
+  const hasRequiredParam = parameterList?.some((param) =>
+    requiredParameter(param)
+  );
 
   function insertTemplateGenerator(type: typeof templateType) {
-    return yamlBlock({
-      [type]: [{ template: templatePath, parameters }],
-    });
+    return codeBlock(
+      'yaml',
+      [
+        `${type}:`,
+        indent(2, `- template: ${templatePath}`),
+        hasRequiredParam
+          ? indent(4, 'parameters:')
+          : indent(4, '# parameters:'),
+        ...(parameterList?.map((param) => {
+          if (requiredParameter(param)) {
+            return indent(6, `${param.name}: ${param.type}`);
+          } else {
+            return indent(
+              6,
+              `# ${param.name}: ${yaml.dump(param.default).trim()}`
+            );
+          }
+        }) ?? []),
+      ].join('\n')
+    );
   }
 
   let templateRepoUsage: string[] | undefined;
@@ -157,7 +171,7 @@ function generateParameters(
           [
             maybe(param.name, code(param.name)),
             maybe(isRequired, bold('\\*')),
-            maybe(param.displayName, '<br/>' + param.displayName),
+            maybe(param.displayName, '\n' + param.displayName),
           ].join(''),
           [
             maybe(param.type, code(param.type)),
