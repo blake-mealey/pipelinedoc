@@ -143,6 +143,18 @@ export function assertValidParameters(
     ? Object.entries(properties.parameters)
     : undefined;
 
+  parametersList?.forEach((param) => {
+    if (!parametersMeta?.some(([name]) => name === param.name)) {
+      trackWarning(
+        `Parameter '${param.name}' from template ${underline(
+          templateFileName
+        )} is not documented in corresponding properties file ${underline(
+          propertiesFileName
+        )}`
+      );
+    }
+  });
+
   parametersMeta?.forEach(([name, meta]) => {
     if (!parametersList?.some((param) => param.name === name)) {
       trackWarning(
