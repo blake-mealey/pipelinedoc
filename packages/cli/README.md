@@ -23,7 +23,7 @@ yarn global add @pipelinedoc/cli
 Generate markdown docs from your templates. Currently only supports Azure Pipelines templates.
 
 ```sh
-pipelinedoc generate [files] [options]
+pipelinedoc generate <files> [options]
 ```
 
 #### Arguments:
