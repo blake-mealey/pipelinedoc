@@ -32,7 +32,9 @@ module.exports = {
 
     if (options.watch || options.w) {
       info('Watching for changes...');
-      const watcher = watch(patterns);
+      const watcher = watch(patterns, {
+        ignored: ['node_modules', '.git']
+      });
       watcher.on('add', async file => {
         info('File added: ', file);
         await generateDocs([file], generateOptions, repoMeta, outputDir);
