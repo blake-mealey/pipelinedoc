@@ -1,5 +1,11 @@
 import yaml from 'js-yaml';
 
+export function frontmatter(data: any) {
+  return ['---', yaml.dump(data, { skipInvalid: true }).trim(), '---'].join(
+    '\n'
+  );
+}
+
 export function heading(text: string, depth: number) {
   return '#'.repeat(depth) + ' ' + text;
 }
