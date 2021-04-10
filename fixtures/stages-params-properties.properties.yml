@@ -1,0 +1,7 @@
+name: Stages (parameters & properties)
+version: 1
+description: |
+  A stages template with parameters and a properties file.
+parameters:
+  name:
+    description: A useless parameter
