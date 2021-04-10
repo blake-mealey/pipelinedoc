@@ -9,7 +9,7 @@
   "scripts": {
     "prepare": "husky install",
     "docs": "pipelinedoc generate fixtures/**/*.yml --out-dir fixtures/docs",
-    "docs:watch": "npm run docs -- --watch",
-    "pre-commit": "npm run docs -- --assert-unstaged"
+    "docs:watch": "yarn docs --watch",
+    "pre-commit": "yarn docs --assert-unstaged"
   }
 }
