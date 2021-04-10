@@ -4,7 +4,7 @@
 
 **_⚠ DEPRECATED: Use something else ⚠_**
 
-_Source: [/steps-deprecated.yml](/steps-deprecated.yml)_
+_Source: [/fixtures/steps-deprecated.yml](/fixtures/steps-deprecated.yml)_
 <br/>
 _Template type: `steps`_
 
@@ -24,5 +24,5 @@ Insert template:
 
 ```yaml
 steps:
-  - template: steps-deprecated.yml@templates
+  - template: fixtures/steps-deprecated.yml@templates
 ```

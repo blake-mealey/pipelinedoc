@@ -2,7 +2,7 @@
 
 # Stages (parameters & properties)
 
-_Source: [/stages-params-properties.yml](/stages-params-properties.yml)_
+_Source: [/fixtures/stages-params-properties.yml](/fixtures/stages-params-properties.yml)_
 <br/>
 _Template type: `stages`_
 <br/>
@@ -27,7 +27,7 @@ Insert template:
 
 ```yaml
 stages:
-  - template: stages-params-properties.yml@templates
+  - template: fixtures/stages-params-properties.yml@templates
     # parameters:
       # name: value
 ```

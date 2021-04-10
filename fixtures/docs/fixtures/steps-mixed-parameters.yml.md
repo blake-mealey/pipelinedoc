@@ -2,7 +2,7 @@
 
 # steps-mixed-parameters
 
-_Source: [/steps-mixed-parameters.yml](/steps-mixed-parameters.yml)_
+_Source: [/fixtures/steps-mixed-parameters.yml](/fixtures/steps-mixed-parameters.yml)_
 <br/>
 _Template type: `steps`_
 
@@ -22,7 +22,7 @@ Insert template:
 
 ```yaml
 steps:
-  - template: steps-mixed-parameters.yml@templates
+  - template: fixtures/steps-mixed-parameters.yml@templates
     parameters:
       # condition: null
       # myParameter: my-string
