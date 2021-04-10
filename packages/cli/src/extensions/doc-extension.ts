@@ -3,9 +3,10 @@ import {
   GenerateOptions,
   RepoMetaData,
   Template,
-  TemplateMetaData
+  TemplateMetaData,
 } from '../az-pipelines';
 import {
+  assertNoUnstagedDocs,
   assertValidParameters,
   assertValidProperty,
   generateDocs,
@@ -14,7 +15,7 @@ import {
   getRepoDetails,
   hadErrors,
   trackError,
-  trackWarning
+  trackWarning,
 } from '../toolbox/doc-tools';
 
 export interface DocExtension {
@@ -43,6 +44,7 @@ export interface DocExtension {
   ): Promise<void>;
   getGitUrl(): Promise<any>;
   getRepoDetails(): Promise<RepoMetaData>;
+  assertNoUnstagedDocs(outputDir: string): Promise<void>;
 }
 
 module.exports = (toolbox: GluegunToolbox) => {
@@ -55,6 +57,7 @@ module.exports = (toolbox: GluegunToolbox) => {
     getPropertiesFile: (...args) => getPropertiesFile(toolbox, ...args),
     generateDocs: (...args) => generateDocs(toolbox, ...args),
     getGitUrl: () => getGitUrl(),
-    getRepoDetails: () => getRepoDetails(toolbox)
+    getRepoDetails: () => getRepoDetails(toolbox),
+    assertNoUnstagedDocs: (...args) => assertNoUnstagedDocs(toolbox, ...args),
   };
 };

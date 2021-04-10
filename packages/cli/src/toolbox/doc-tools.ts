@@ -1,7 +1,7 @@
 import { GluegunToolbox } from 'gluegun';
 import simpleGit from 'simple-git';
 import GitUrlParse from 'git-url-parse';
-import { basename } from 'path';
+import { basename, relative } from 'path';
 import {
   RepoMetaData,
   GenerateOptions,
@@ -341,4 +341,27 @@ export async function generateDocs(
 
     trackError(e.message);
   }
+}
+
+export async function assertNoUnstagedDocs(
+  toolbox: GluegunToolbox,
+  outputDir: string
+) {
+  const {
+    filesystem: { path },
+    doc: { trackError },
+  } = toolbox;
+
+  const git = simpleGit();
+  const gitRoot = await git.revparse(['--show-toplevel']);
+  const gitStatus = await git.status();
+
+  const files = gitStatus.files.map((x) => path(gitRoot, x.path));
+  const changedDocs = files.filter(
+    (file) => !relative(outputDir, file).startsWith('..')
+  );
+
+  changedDocs.forEach((file) => {
+    trackError(`Unstaged doc detected: ${relative('./', file)}`);
+  });
 }
