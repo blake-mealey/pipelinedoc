@@ -1,0 +1,11 @@
+parameters:
+  - name: condition
+    type: string
+    default: null
+  - name: myParameter
+    type: string
+    default: 'my-string'
+
+steps:
+  - pwsh: echo "${{ parameters.myParameter }}"
+    condition: ${{ parameters.condition }}

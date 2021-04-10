@@ -1,0 +1,2 @@
+steps:
+  - pwsh: echo "I am deprecated :("

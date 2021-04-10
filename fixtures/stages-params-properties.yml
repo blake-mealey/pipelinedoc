@@ -1,0 +1,9 @@
+parameters:
+  name: value
+
+stages:
+  - stage: my_stage
+    jobs:
+      - job: my_job
+        steps:
+          - pwsh: 'echo "Name: ${{ parameters.name }}"'

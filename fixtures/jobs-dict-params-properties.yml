@@ -1,0 +1,11 @@
+parameters:
+  name: value
+  boolean: false
+  unknown: null
+  object: {}
+  number: 1.5
+
+jobs:
+  - job: my_job
+    steps:
+      - pwsh: 'echo "Name: ${{ parameters.name }}"'

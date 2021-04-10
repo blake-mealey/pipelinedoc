@@ -1,8 +1,0 @@
-parameters:
-  - name: name
-    displayName: Name of the person to say hello to
-    default: World
-    type: string
-
-steps:
-  - script: echo "Hello ${{ parameters.name }}"

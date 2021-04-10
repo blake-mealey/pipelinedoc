@@ -1,0 +1,49 @@
+parameters:
+  - name: condition
+    type: string
+    default: null
+  - name: myParameter
+    type: string
+    default: 'my-string'
+  - name: continue
+    type: boolean
+  - name: details
+    type: object
+    default: {}
+  - name: percentage
+    type: number
+    default: 100
+  - name: myStepParameter
+    type: step
+  - name: myStepListParameter
+    type: stepList
+  - name: myJobParameter
+    type: job
+  - name: myJobListParameter
+    type: jobList
+  - name: myDeploymentParameter
+    type: deployment
+  - name: myDeploymentListParameter
+    type: deploymentList
+  - name: myStageParameter
+    type: stage
+  - name: myStageListParameter
+    type: stageList
+  - name: fruit
+    type: string
+    values:
+      - apples
+      - oranges
+      - bananas
+  - name: pointEstimate
+    type: number
+    values:
+      - 1
+      - 3
+      - 5
+      - 8
+      - 13
+
+steps:
+  - pwsh: echo "${{ parameters.myParameter }}"
+    condition: ${{ parameters.condition }}

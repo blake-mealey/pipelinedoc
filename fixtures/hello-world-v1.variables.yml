@@ -1,2 +1,0 @@
-variables:
-  vmImage: ubuntu-latest

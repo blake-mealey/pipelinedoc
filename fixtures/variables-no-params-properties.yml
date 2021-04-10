@@ -1,0 +1,4 @@
+variables:
+  - group: myVariableGroup
+  - name: myStaticVariable
+    value: super cool
