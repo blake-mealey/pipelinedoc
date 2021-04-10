@@ -38,6 +38,8 @@ pipelinedoc generate <files> [options]
   exit code.
 - `--repo-identifier`: the repo identifier for importing templates in Azure Pipelines. Defaults to
   `templates`.
+- `--generate-frontmatter`: generate YAML frontmatter on each `.md` file with machine-readable
+  metadata.
 
 ## Properties file
 

@@ -18,7 +18,8 @@ module.exports = {
     const repoDetails = await getRepoDetails();
 
     const generateOptions: Partial<GenerateOptions> = {
-      headingDepth: 1
+      headingDepth: 1,
+      generateFrontmatter: options.generateFrontmatter
     };
 
     const repoMeta: Partial<TemplateMetaData> = {
