@@ -356,12 +356,14 @@ export async function assertNoUnstagedDocs(
   const gitRoot = await git.revparse(['--show-toplevel']);
   const gitStatus = await git.status();
 
-  const files = gitStatus.files.map((x) => path(gitRoot, x.path));
-  const changedDocs = files.filter(
+  const unstagedFiles = gitStatus.files
+    .filter((x) => !gitStatus.staged.includes(x.path))
+    .map((x) => path(gitRoot, x.path));
+  const unstagedDocs = unstagedFiles.filter(
     (file) => !relative(outputDir, file).startsWith('..')
   );
 
-  changedDocs.forEach((file) => {
+  unstagedDocs.forEach((file) => {
     trackError(`Unstaged doc detected: ${relative('./', file)}`);
   });
 }
