@@ -354,7 +354,7 @@ export async function assertNoUnstagedDocs(
 
   const git = simpleGit();
   const gitRoot = await git.revparse(['--show-toplevel']);
-  const gitStatus = await git.status();
+  const gitStatus = await git.status(['--no-renames']);
 
   const unstagedFiles = gitStatus.files
     .filter((x) => !gitStatus.staged.includes(x.path))

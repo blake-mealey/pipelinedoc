@@ -2,7 +2,7 @@
 
 # Jobs (dictionary parameters & properties)
 
-_Source: [/jobs-dict-params-properties.yml](/jobs-dict-params-properties.yml)_
+_Source: [/fixtures/jobs-dict-params-properties.yml](/fixtures/jobs-dict-params-properties.yml)_
 <br/>
 _Template type: `jobs`_
 <br/>
@@ -27,7 +27,7 @@ Insert template:
 
 ```yaml
 jobs:
-  - template: jobs-dict-params-properties.yml@templates
+  - template: fixtures/jobs-dict-params-properties.yml@templates
     # parameters:
       # name: value
       # boolean: false

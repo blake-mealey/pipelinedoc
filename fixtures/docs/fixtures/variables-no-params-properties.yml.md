@@ -2,7 +2,7 @@
 
 # Variables (properties)
 
-_Source: [/variables-no-params-properties.yml](/variables-no-params-properties.yml)_
+_Source: [/fixtures/variables-no-params-properties.yml](/fixtures/variables-no-params-properties.yml)_
 <br/>
 _Template type: `variables`_
 
@@ -25,5 +25,5 @@ Insert template:
 
 ```yaml
 variables:
-  - template: variables-no-params-properties.yml@templates
+  - template: fixtures/variables-no-params-properties.yml@templates
 ```

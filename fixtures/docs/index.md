@@ -2,10 +2,10 @@
 
 # Pipeline Docs
 
-- [jobs-dict-params-properties.yml](jobs-dict-params-properties.yml.md)
-- [stages-params-properties.yml](stages-params-properties.yml.md)
-- [steps-deprecated.yml](steps-deprecated.yml.md)
-- [steps-mixed-parameters.yml](steps-mixed-parameters.yml.md)
-- [steps-no-params-no-properties.yml](steps-no-params-no-properties.yml.md)
-- [steps-optional-parameters.yml](steps-optional-parameters.yml.md)
-- [variables-no-params-properties.yml](variables-no-params-properties.yml.md)
+- [fixtures/jobs-dict-params-properties.yml](fixtures/jobs-dict-params-properties.yml.md)
+- [fixtures/stages-params-properties.yml](fixtures/stages-params-properties.yml.md)
+- [fixtures/steps-deprecated.yml](fixtures/steps-deprecated.yml.md)
+- [fixtures/steps-mixed-parameters.yml](fixtures/steps-mixed-parameters.yml.md)
+- [fixtures/steps-no-params-no-properties.yml](fixtures/steps-no-params-no-properties.yml.md)
+- [fixtures/steps-optional-parameters.yml](fixtures/steps-optional-parameters.yml.md)
+- [fixtures/variables-no-params-properties.yml](fixtures/variables-no-params-properties.yml.md)

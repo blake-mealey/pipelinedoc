@@ -2,5 +2,14 @@
   "private": true,
   "workspaces": [
     "packages/cli"
-  ]
+  ],
+  "devDependencies": {
+    "husky": "^6.0.0"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "docs": "pipelinedoc generate fixtures/**/*.yml --out-dir fixtures/docs",
+    "docs:watch": "npm run docs -- --watch",
+    "pre-commit": "npm run docs -- --assert-unstaged"
+  }
 }

@@ -2,7 +2,7 @@
 
 # steps-no-params-no-properties
 
-_Source: [/steps-no-params-no-properties.yml](/steps-no-params-no-properties.yml)_
+_Source: [/fixtures/steps-no-params-no-properties.yml](/fixtures/steps-no-params-no-properties.yml)_
 <br/>
 _Template type: `steps`_
 
@@ -22,5 +22,5 @@ Insert template:
 
 ```yaml
 steps:
-  - template: steps-no-params-no-properties.yml@templates
+  - template: fixtures/steps-no-params-no-properties.yml@templates
 ```

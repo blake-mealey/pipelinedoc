@@ -2,7 +2,7 @@
 
 # steps-optional-parameters
 
-_Source: [/steps-optional-parameters.yml](/steps-optional-parameters.yml)_
+_Source: [/fixtures/steps-optional-parameters.yml](/fixtures/steps-optional-parameters.yml)_
 <br/>
 _Template type: `steps`_
 
@@ -22,7 +22,7 @@ Insert template:
 
 ```yaml
 steps:
-  - template: steps-optional-parameters.yml@templates
+  - template: fixtures/steps-optional-parameters.yml@templates
     # parameters:
       # condition: null
       # myParameter: my-string
