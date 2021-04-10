@@ -12,7 +12,7 @@ module.exports = {
   run: async (toolbox: GluegunToolbox) => {
     const {
       parameters: { array: patterns, options },
-      doc: { getRepoDetails, generateDocs, hadErrors }
+      doc: { getRepoDetails, generateDocs, hadErrors, assertNoUnstagedDocs }
     } = toolbox;
 
     const repoDetails = await getRepoDetails();
@@ -56,6 +56,10 @@ module.exports = {
       ).flat();
 
       await generateDocs(files, generateOptions, repoMeta, outputDir);
+
+      if (options.assertUnstaged) {
+        await assertNoUnstagedDocs(outputDir);
+      }
 
       if (hadErrors()) {
         process.exit(1);

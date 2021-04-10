@@ -40,6 +40,8 @@ pipelinedoc generate <files> [options]
   `templates`.
 - `--generate-frontmatter`: generate YAML frontmatter on each `.md` file with machine-readable
   metadata.
+- `--assert-unstaged`: exit with a non-zero exit if there are unstaged docs files after generating
+  docs. Useful for pre-commit Git hooks to ensure your docs are up-to-date.
 
 ## Properties file
 
