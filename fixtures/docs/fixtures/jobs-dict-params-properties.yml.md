@@ -30,7 +30,7 @@ resources:
 jobs:
   - template: fixtures/jobs-dict-params-properties.yml@templates
     # parameters:
-      # name: "value"
+      # name: value
       # boolean: false
       # unknown: null
       # object: {}

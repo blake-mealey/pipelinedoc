@@ -28,7 +28,7 @@ steps:
   - template: fixtures/steps-mixed-parameters.yml@templates
     parameters:
       # condition: null
-      # myParameter: "my-string"
+      # myParameter: my-string
       continue: boolean
       # details: {}
       # percentage: 100
