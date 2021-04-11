@@ -230,7 +230,7 @@ export async function generateDocs(
   outputDir: string
 ) {
   const {
-    filesystem: { readAsync, writeAsync, path },
+    filesystem: { readAsync, writeAsync, path, dirAsync },
     print: {
       colors: { underline },
     },
@@ -243,6 +243,8 @@ export async function generateDocs(
   } = toolbox;
 
   try {
+    await dirAsync(outputDir, { empty: true });
+
     const results = await Promise.all(
       files
         .filter(
