@@ -59,6 +59,8 @@ prefer). For example, if I had a `my-template.yml` template, I would create a
 - `name`: the display name of the template.
 - `version`: the version of the template. Strings and numbers are supported.
 - `description`: the description of the template. Markdown is supported.
+- `category`: a category to assign the template to. Used for grouping templates in the `index.md`
+  doc
 - `deprecated`: whether or not the template is deprecated. Implicitly `true` if `deprecatedWarning`
   is supplied.
 - `deprecatedWarning`: a message to include with the deprecated warning. Markdown is supported.
@@ -71,6 +73,7 @@ name: My template
 version: 1
 description: |
   This is my _fancy_ description with **markdown**!
+category: Utils
 parameters:
   myParameter:
     description: |

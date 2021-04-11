@@ -286,6 +286,7 @@ export async function generateDocs(
               name: fromFile.name,
               description: fromFile.description,
               version: fromFile.version,
+              category: fromFile.category,
               deprecated: fromFile.deprecated ?? !!fromFile.deprecatedWarning,
               deprecatedWarning: fromFile.deprecatedWarning,
               parameters: fromFile.parameters,
@@ -333,11 +334,21 @@ export async function generateDocs(
     );
 
     const indexFile = path(outputDir, 'index.md');
+    const allCategories = Array.from(
+      new Set([undefined, ...results.map((template) => template.category)])
+    );
+
     const markdown =
       nunjucksEnv
         .render('index.md.njk', {
-          templates: results,
           options: generateOptions,
+          hasCategories: !allCategories.every((x) => x === undefined),
+          categories: allCategories.map((category) => ({
+            name: category,
+            templates: results.filter(
+              (template) => template.category === category
+            ),
+          })),
         })
         .trim() + '\n';
     await writeAsync(indexFile, markdown);
