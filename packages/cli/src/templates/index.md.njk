@@ -2,6 +2,14 @@
 
 # Pipeline Docs
 
-{% for template in templates %}
+{% for category in categories -%}
+{%- if category.templates.length > 0 %}
+{%- if hasCategories %}
+## {{ category.name or 'Uncategorized' }}
+{% endif %}
+
+{%- for template in category.templates %}
 * [{{ template.name }}]({{ template.filePath }}.md)
 {%- endfor %}
+{%- endif %}
+{% endfor %}

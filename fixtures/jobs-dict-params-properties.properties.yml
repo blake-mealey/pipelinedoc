@@ -1,5 +1,6 @@
 name: Jobs (dictionary parameters & properties)
 version: 1
+category: Jobs
 description: |
   A jobs template with parameters specified as a dictionary and a properties file.
 parameters:

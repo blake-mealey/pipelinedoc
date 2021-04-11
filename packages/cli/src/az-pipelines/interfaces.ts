@@ -17,6 +17,7 @@ export interface TemplateMetaData {
   name: string;
   description?: string;
   version?: number | string;
+  category?: string;
   deprecated?: boolean;
   deprecatedWarning?: string;
   filePath?: string;
