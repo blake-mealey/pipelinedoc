@@ -77,6 +77,7 @@ export function generate(
   const fullOptions: GenerateOptions = {
     headingDepth: options?.headingDepth ?? 1,
     generateFrontmatter: options?.generateFrontmatter ?? false,
+    generator: options?.generator ?? { name: 'unknown', version: '0' },
   };
 
   const parameterList = getParameterList(template.parameters);

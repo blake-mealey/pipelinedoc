@@ -321,13 +321,9 @@ export async function generateDocs(
           const meta: TemplateMetaData = {
             ...properties,
             ...repoMeta,
-            filePath: file
-          }
-          const markdown = generate(
-            data,
-            meta,
-            generateOptions
-          );
+            filePath: file,
+          };
+          const markdown = generate(data, meta, generateOptions);
           await writeAsync(path(outputDir, `${file}.md`), markdown);
 
           return meta;
@@ -339,12 +335,11 @@ export async function generateDocs(
       nunjucksEnv
         .render('index.md.njk', {
           templates: results,
+          options: generateOptions,
         })
         .trim() + '\n';
     await writeAsync(indexFile, markdown);
   } catch (e) {
-    console.log(e);
-
     trackError(e.message);
   }
 }
