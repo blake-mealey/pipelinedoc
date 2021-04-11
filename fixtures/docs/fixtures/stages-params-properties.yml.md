@@ -30,7 +30,7 @@ resources:
 stages:
   - template: fixtures/stages-params-properties.yml@templates
     # parameters:
-      # name: "value"
+      # name: value
 ```
 
 

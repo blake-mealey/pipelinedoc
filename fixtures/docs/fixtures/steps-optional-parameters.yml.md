@@ -28,7 +28,7 @@ steps:
   - template: fixtures/steps-optional-parameters.yml@templates
     # parameters:
       # condition: null
-      # myParameter: "my-string"
+      # myParameter: my-string
 ```
 
 

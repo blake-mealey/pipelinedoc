@@ -73,7 +73,7 @@ _Version: {{ meta.version }}_
 {%- if param | requiredParam %}
       {{ param.name }}: {{ param.type }}
 {%- else %}
-      # {{ param.name }}: {{ param.default | dump }}
+      # {{ param.name }}: {{ param.default | dumpYaml }}
 {%- endif %}
 {%- endfor %}
 ```
