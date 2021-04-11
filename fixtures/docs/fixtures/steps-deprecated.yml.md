@@ -2,7 +2,8 @@
 
 # Steps (deprecated)
 
-**_⚠ DEPRECATED: Use something else ⚠_**
+⚠ DEPRECATED: Use something else ⚠
+
 
 _Source: [/fixtures/steps-deprecated.yml](/fixtures/steps-deprecated.yml)_
 <br/>
@@ -10,7 +11,7 @@ _Template type: `steps`_
 
 ## Example usage
 
-Use template repository:
+### Use template repository
 
 ```yaml
 resources:
@@ -20,7 +21,8 @@ resources:
       type: github
 ```
 
-Insert template:
+
+### Use template
 
 ```yaml
 steps:

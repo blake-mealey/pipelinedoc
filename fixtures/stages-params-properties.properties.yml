@@ -4,4 +4,9 @@ description: |
   A stages template with parameters and a properties file.
 parameters:
   name:
-    description: A useless parameter
+    description: |
+      A useless parameter
+      with a multi-line
+      description.
+
+      And a second paragraph!

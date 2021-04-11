@@ -2,13 +2,15 @@
 
 # steps-optional-parameters
 
+
+
 _Source: [/fixtures/steps-optional-parameters.yml](/fixtures/steps-optional-parameters.yml)_
 <br/>
 _Template type: `steps`_
 
 ## Example usage
 
-Use template repository:
+### Use template repository
 
 ```yaml
 resources:
@@ -18,19 +20,21 @@ resources:
       type: github
 ```
 
-Insert template:
+
+### Use template
 
 ```yaml
 steps:
   - template: fixtures/steps-optional-parameters.yml@templates
     # parameters:
       # condition: null
-      # myParameter: my-string
+      # myParameter: "my-string"
 ```
+
 
 ## Parameters
 
-|Parameter|Type|Default|Description|
-|---|---|---|---|
-|`condition`|`string` |`null`|TODO|
-|`myParameter`|`string` |`"my-string"`|TODO|
+|Parameter            |Type                   |Default                   |Description                         |
+|---------------------|-----------------------|--------------------------|------------------------------------|
+|`condition`|`string`|`null`||
+|`myParameter`|`string`|`"my-string"`||
