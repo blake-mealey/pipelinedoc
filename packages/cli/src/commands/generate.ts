@@ -12,14 +12,20 @@ module.exports = {
   run: async (toolbox: GluegunToolbox) => {
     const {
       parameters: { array: patterns, options },
-      doc: { getRepoDetails, generateDocs, hadErrors, assertNoUnstagedDocs }
+      doc: { getRepoDetails, generateDocs, hadErrors, assertNoUnstagedDocs },
+      runtime: { brand },
+      meta: { version }
     } = toolbox;
 
     const repoDetails = await getRepoDetails();
 
     const generateOptions: Partial<GenerateOptions> = {
       headingDepth: 1,
-      generateFrontmatter: options.generateFrontmatter
+      generateFrontmatter: options.generateFrontmatter,
+      generator: {
+        name: brand,
+        version: version()
+      }
     };
 
     const repoMeta: Partial<TemplateMetaData> = {

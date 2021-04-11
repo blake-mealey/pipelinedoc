@@ -27,6 +27,10 @@ export interface TemplateMetaData {
 export interface GenerateOptions {
   headingDepth: number;
   generateFrontmatter: boolean;
+  generator: {
+    name: string;
+    version: string;
+  };
 }
 
 export type TemplateParameterType =
