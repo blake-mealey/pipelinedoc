@@ -318,20 +318,19 @@ export async function generateDocs(
             assertValidParameters(file, propertiesFile, properties, template);
           }
 
+          const meta: TemplateMetaData = {
+            ...properties,
+            ...repoMeta,
+            filePath: file
+          }
           const markdown = generate(
             data,
-            {
-              ...properties,
-              ...repoMeta,
-              filePath: file,
-            },
+            meta,
             generateOptions
           );
           await writeAsync(path(outputDir, `${file}.md`), markdown);
 
-          return {
-            file,
-          };
+          return meta;
         })
     );
 
