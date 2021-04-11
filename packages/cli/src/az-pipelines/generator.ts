@@ -91,7 +91,7 @@ export function generate(
 
   return (
     nunjucksEnv
-      .render('template.njk', {
+      .render('template.md.njk', {
         template,
         meta,
         options: fullOptions,
