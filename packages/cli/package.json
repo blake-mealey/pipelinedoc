@@ -12,7 +12,8 @@
     "clean-build": "rm -rf ./build",
     "compile": "tsc -p .",
     "compile:watch": "tsc -p . -w",
-    "copy-templates": "if [ -e ./src/templates ]; then cp -a ./src/templates ./build/; fi",
+    "copy-templates": "cpx src/templates/**/* build/templates -C",
+    "copy-templates:watch": "yarn copy-templates --watch",
     "build": "yarn format && yarn lint && yarn clean-build && yarn compile && yarn copy-templates",
     "prepublishOnly": "yarn build",
     "test": "jest",
@@ -37,6 +38,7 @@
     "glob": "^7.1.6",
     "gluegun": "latest",
     "js-yaml": "^4.0.0",
+    "nunjucks": "^3.2.3",
     "simple-git": "^2.37.0"
   },
   "devDependencies": {
@@ -44,6 +46,8 @@
     "@types/jest": "^24.0.18",
     "@types/js-yaml": "^4.0.0",
     "@types/node": "^12.7.11",
+    "@types/nunjucks": "^3.1.4",
+    "cpx": "^1.5.0",
     "jest": "^24.1.0",
     "prettier": "^1.12.1",
     "semantic-release": "^17.4.2",

@@ -2,18 +2,18 @@
 
 # Jobs (dictionary parameters & properties)
 
+A jobs template with parameters specified as a dictionary and a properties file.
+
+
 _Source: [/fixtures/jobs-dict-params-properties.yml](/fixtures/jobs-dict-params-properties.yml)_
 <br/>
 _Template type: `jobs`_
 <br/>
 _Version: 1_
 
-A jobs template with parameters specified as a dictionary and a properties file.
-
-
 ## Example usage
 
-Use template repository:
+### Use template repository
 
 ```yaml
 resources:
@@ -23,25 +23,27 @@ resources:
       type: github
 ```
 
-Insert template:
+
+### Use template
 
 ```yaml
 jobs:
   - template: fixtures/jobs-dict-params-properties.yml@templates
     # parameters:
-      # name: value
+      # name: "value"
       # boolean: false
       # unknown: null
       # object: {}
       # number: 1.5
 ```
 
+
 ## Parameters
 
-|Parameter|Type|Default|Description|
-|---|---|---|---|
-|`name`|`string` |`"value"`|A useless parameter|
-|`boolean`|`boolean` |`false`|TODO|
-|`unknown`|`object` |`null`|TODO|
-|`object`|`object` |`{}`|TODO|
-|`number`|`number` |`1.5`|TODO|
+|Parameter            |Type                   |Default                   |Description                         |
+|---------------------|-----------------------|--------------------------|------------------------------------|
+|`name`|`string`|`"value"`|A useless parameter|
+|`boolean`|`boolean`|`false`||
+|`unknown`|`object`|`null`||
+|`object`|`object`|`{}`||
+|`number`|`number`|`1.5`||

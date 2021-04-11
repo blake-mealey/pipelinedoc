@@ -2,13 +2,15 @@
 
 # steps-no-params-no-properties
 
+
+
 _Source: [/fixtures/steps-no-params-no-properties.yml](/fixtures/steps-no-params-no-properties.yml)_
 <br/>
 _Template type: `steps`_
 
 ## Example usage
 
-Use template repository:
+### Use template repository
 
 ```yaml
 resources:
@@ -18,7 +20,8 @@ resources:
       type: github
 ```
 
-Insert template:
+
+### Use template
 
 ```yaml
 steps:

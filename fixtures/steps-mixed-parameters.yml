@@ -2,6 +2,7 @@ parameters:
   - name: condition
     type: string
     default: null
+    displayName: Condition
   - name: myParameter
     type: string
     default: 'my-string'
@@ -13,6 +14,7 @@ parameters:
   - name: percentage
     type: number
     default: 100
+    displayName: Percentage
   - name: myStepParameter
     type: step
   - name: myStepListParameter
