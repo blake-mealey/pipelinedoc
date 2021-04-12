@@ -2,7 +2,6 @@
 
 # Stages (parameters & properties)
 
-A stages template with parameters and a properties file.
 
 
 _Source: [/fixtures/stages-params-properties.yml](/fixtures/stages-params-properties.yml)_
@@ -10,6 +9,10 @@ _Source: [/fixtures/stages-params-properties.yml](/fixtures/stages-params-proper
 _Template type: `stages`_
 <br/>
 _Version: 1_
+
+
+A stages template with parameters and a properties file.
+
 
 ## Example usage
 

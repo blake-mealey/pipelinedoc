@@ -8,6 +8,10 @@ _Source: [/fixtures/steps-mixed-parameters.yml](/fixtures/steps-mixed-parameters
 <br/>
 _Template type: `steps`_
 
+
+
+
+
 ## Example usage
 
 ### Use template repository

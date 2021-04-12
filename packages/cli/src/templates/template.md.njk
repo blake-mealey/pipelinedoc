@@ -17,15 +17,11 @@
 
 {{ options.headingDepth | heading }} {{ meta.name }}
 
-{% if meta.description -%}
-{{ meta.description | trim }}
-{% endif -%}
-
 {% if meta.deprecated and meta.deprecatedWarning -%}
 ⚠ DEPRECATED: {{ meta.deprecatedWarning }} ⚠
-{% elif meta.deprecated -%}
+{%- elif meta.deprecated -%}
 ⚠ DEPRECATED ⚠
-{% endif %}
+{%- endif %}
 
 _Source: [{{ '/' + meta.filePath }}]({{ '/' + meta.filePath }})_
 {% if derived.templateType -%}
@@ -35,7 +31,11 @@ _Template type: `{{ derived.templateType }}`_
 {% if meta.version -%}
 <br/>
 _Version: {{ meta.version }}_
-{% endif -%}
+{% endif %}
+
+{% if meta.description -%}
+{{ meta.description | trim }}
+{%- endif %}
 
 {% if meta.filePath and derived.templateType %}
 {{ (options.headingDepth + 1) | heading }} Example usage
