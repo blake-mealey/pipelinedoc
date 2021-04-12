@@ -8,6 +8,10 @@ _Source: [/fixtures/steps-no-params-no-properties.yml](/fixtures/steps-no-params
 <br/>
 _Template type: `steps`_
 
+
+
+
+
 ## Example usage
 
 ### Use template repository

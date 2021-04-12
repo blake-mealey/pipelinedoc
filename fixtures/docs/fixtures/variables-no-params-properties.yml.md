@@ -2,12 +2,15 @@
 
 # Variables (properties)
 
-A variables template with no parameters and a properties file.
 
 
 _Source: [/fixtures/variables-no-params-properties.yml](/fixtures/variables-no-params-properties.yml)_
 <br/>
 _Template type: `variables`_
+
+
+A variables template with no parameters and a properties file.
+
 
 ## Example usage
 

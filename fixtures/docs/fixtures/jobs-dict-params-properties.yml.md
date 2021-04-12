@@ -2,7 +2,6 @@
 
 # Jobs (dictionary parameters & properties)
 
-A jobs template with parameters specified as a dictionary and a properties file.
 
 
 _Source: [/fixtures/jobs-dict-params-properties.yml](/fixtures/jobs-dict-params-properties.yml)_
@@ -10,6 +9,10 @@ _Source: [/fixtures/jobs-dict-params-properties.yml](/fixtures/jobs-dict-params-
 _Template type: `jobs`_
 <br/>
 _Version: 1_
+
+
+A jobs template with parameters specified as a dictionary and a properties file.
+
 
 ## Example usage
 
