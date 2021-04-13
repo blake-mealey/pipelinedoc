@@ -21,6 +21,24 @@ const nunjucksEnv = new nunjucks.Environment(
   }
 );
 
+nunjucksEnv.addFilter(
+  'expandVariables',
+  (str: string, meta: TemplateMetaData) => {
+    let templatePath = meta.filePath;
+    if (meta.repo) {
+      templatePath += `@${meta.repo.identifier}`;
+    }
+
+    const variables = {
+      templatePath,
+    };
+
+    return Object.entries(variables).reduce((prevStr, [key, value]) => {
+      return prevStr.replace(new RegExp(`\\$<${key}>`, 'g'), value);
+    }, str);
+  }
+);
+
 nunjucksEnv.addFilter('dumpYaml', (data: any) => {
   return yaml.dump(data, { skipInvalid: true }).trim();
 });

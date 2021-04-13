@@ -13,6 +13,12 @@ export interface ParameterMetaData {
 
 export type ParametersMetaData = Record<string, ParameterMetaData>;
 
+export interface TemplateExample {
+  title?: string;
+  description?: string;
+  example?: any;
+}
+
 export interface TemplateMetaData {
   name: string;
   description?: string;
@@ -23,6 +29,7 @@ export interface TemplateMetaData {
   filePath?: string;
   repo?: RepoMetaData;
   parameters?: ParametersMetaData;
+  examples?: TemplateExample[];
 }
 
 export interface GenerateOptions {
