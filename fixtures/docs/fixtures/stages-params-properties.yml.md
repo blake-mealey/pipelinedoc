@@ -37,6 +37,24 @@ stages:
 ```
 
 
+
+### Example 1
+
+
+
+```yaml
+stages:
+  - template: fixtures/stages-params-properties.yml@templates
+    parameters:
+      name: John Smith
+  - template: fixtures/stages-params-properties.yml@templates
+    parameters:
+      name: Jane Doe
+```
+
+
+
+
 ## Parameters
 
 |Parameter            |Type                   |Default                   |Description                         |

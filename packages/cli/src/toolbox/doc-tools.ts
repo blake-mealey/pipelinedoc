@@ -290,6 +290,7 @@ export async function generateDocs(
               deprecated: fromFile.deprecated ?? !!fromFile.deprecatedWarning,
               deprecatedWarning: fromFile.deprecatedWarning,
               parameters: fromFile.parameters,
+              examples: fromFile.examples,
             };
 
             assertValidProperty(propertiesFile, properties, 'name', 'string');

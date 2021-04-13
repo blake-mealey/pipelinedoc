@@ -11,3 +11,12 @@ parameters:
       description.
 
       And a second paragraph!
+examples:
+  - example:
+      stages:
+        - template: $<templatePath>
+          parameters:
+            name: John Smith
+        - template: $<templatePath>
+          parameters:
+            name: Jane Doe

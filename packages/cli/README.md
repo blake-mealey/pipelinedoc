@@ -64,7 +64,13 @@ prefer). For example, if I had a `my-template.yml` template, I would create a
 - `deprecated`: whether or not the template is deprecated. Implicitly `true` if `deprecatedWarning`
   is supplied.
 - `deprecatedWarning`: a message to include with the deprecated warning. Markdown is supported.
-- `parameters.*.description`: the description of the parameter. Markdown is supported.
+- `parameters.<parameter name>.description`: the description of the parameter. Markdown is
+  supported.
+- `examples.<index>.title`: the title of a usage example. Markdown is supported.
+- `examples.<index>.description`: the description of a usage example. Markdown is supported.
+- `examples.<index>.example`: the example YAML object. Examples may include variables in keys or
+  values using the syntax `$<variableName>`. The following variables are available:
+  - `templatePath`: the template path (including repo identifier) to include the template with.
 
 ### Example
 
@@ -78,4 +84,19 @@ parameters:
   myParameter:
     description: |
       This is my parameter with the name `myParameter`.
+examples:
+  - example:
+      stages:
+        - stage: my_stage
+          jobs:
+            - template: $<templatePath>
+              parameters:
+                myParameter: the best way to use me
+  - title: Example title
+    description: Some more details here.
+    example:
+      jobs:
+        - template: $<templatePath>
+          parameters:
+            myParameter: another option
 ```

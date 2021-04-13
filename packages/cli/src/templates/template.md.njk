@@ -77,6 +77,19 @@ _Version: {{ meta.version }}_
 {%- endif %}
 {%- endfor %}
 ```
+
+{% if meta.examples %}
+{% for example in meta.examples %}
+{{ (options.headingDepth + 2) | heading }} {{ example.title if example.title else 'Example ' + loop.index }}
+
+{{ example.description }}
+
+```yaml
+{{ example.example | dumpYaml | expandVariables(meta) }}
+```
+{% endfor %}
+{% endif %}
+
 {%- endif %}
 
 {% if derived.parameterList %}
