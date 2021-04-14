@@ -9,7 +9,11 @@
 {% endif %}
 
 {%- for template in category.templates %}
-* [{{ template.name }}]({{ template.filePath }}.md)
+{% if template.deprecated -%}
+* [_{{ template.name }}{% if template.version %} v{{template.version}}{% endif %} (deprecated)_]({{ template.filePath }}.md)
+{%- else -%}
+* [{{ template.name }}{% if template.version %} v{{template.version}}{% endif %}]({{ template.filePath }}.md)
+{%- endif %}
 {%- endfor %}
 {%- endif %}
 {% endfor %}
