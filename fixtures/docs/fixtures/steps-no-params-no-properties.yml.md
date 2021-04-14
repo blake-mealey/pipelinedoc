@@ -26,8 +26,3 @@ resources:
 
 
 ### Use template
-
-```yaml
-steps:
-  - template: fixtures/steps-no-params-no-properties.yml@templates
-```

@@ -27,13 +27,8 @@ resources:
 
 ### Use template
 
-```yaml
-steps:
-  - template: fixtures/steps-optional-parameters.yml@templates
-    # parameters:
-      # condition: null
-      # myParameter: my-string
-```
+
+
 
 
 

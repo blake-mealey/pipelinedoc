@@ -30,11 +30,12 @@ resources:
 ### Use template
 
 ```yaml
-stages:
-  - template: fixtures/stages-params-properties.yml@templates
-    # parameters:
-      # name: value
+extends:
+  template: fixtures/stages-params-properties.yml@templates
+  # parameters:
+    # name: value
 ```
+
 
 
 

@@ -61,6 +61,9 @@ prefer). For example, if I had a `my-template.yml` template, I would create a
 - `description`: the description of the template. Markdown is supported.
 - `category`: a category to assign the template to. Used for grouping templates in the `index.md`
   doc
+- `usageStyle`: the style of the usage example, either `'insert'` or `'extend'`. If `'insert'`, uses
+  the template insertion syntax, and if `'extend'`, uses the template extension syntax. Defaults to
+  `'insert'`.
 - `deprecated`: whether or not the template is deprecated. Implicitly `true` if `deprecatedWarning`
   is supplied.
 - `deprecatedWarning`: a message to include with the deprecated warning. Markdown is supported.

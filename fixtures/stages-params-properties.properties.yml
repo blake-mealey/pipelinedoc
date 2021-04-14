@@ -1,6 +1,7 @@
 name: Stages (parameters & properties)
 version: 1
 category: Stages
+usageStyle: extend
 description: |
   A stages template with parameters and a properties file.
 parameters:
