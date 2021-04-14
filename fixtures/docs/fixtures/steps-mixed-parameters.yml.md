@@ -27,26 +27,8 @@ resources:
 
 ### Use template
 
-```yaml
-steps:
-  - template: fixtures/steps-mixed-parameters.yml@templates
-    parameters:
-      # condition: null
-      # myParameter: my-string
-      continue: boolean
-      # details: {}
-      # percentage: 100
-      myStepParameter: step
-      myStepListParameter: stepList
-      myJobParameter: job
-      myJobListParameter: jobList
-      myDeploymentParameter: deployment
-      myDeploymentListParameter: deploymentList
-      myStageParameter: stage
-      myStageListParameter: stageList
-      fruit: string
-      pointEstimate: number
-```
+
+
 
 
 

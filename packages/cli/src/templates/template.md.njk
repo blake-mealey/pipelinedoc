@@ -63,6 +63,7 @@ _Version: {{ meta.version }}_
 
 {{ (options.headingDepth + 2) | heading }} Use template
 
+{% if meta.usageStyle == 'insert' -%}
 ```yaml
 {{ derived.templateType }}:
   - template: {{ meta.filePath }}{% if meta.repo %}@{{meta.repo.identifier}}{% endif %}
@@ -77,6 +78,23 @@ _Version: {{ meta.version }}_
 {%- endif %}
 {%- endfor %}
 ```
+{%- elif meta.usageStyle == 'extend' -%}
+```yaml
+extends:
+  template: {{ meta.filePath }}{% if meta.repo %}@{{meta.repo.identifier}}{% endif %}
+{%- if derived.hasParameters %}
+  {% if not derived.hasRequiredParameters %}# {% endif %}parameters:
+{%- endif %}
+{%- for param in derived.parameterList %}
+{%- if param | requiredParam %}
+    {{ param.name }}: {{ param.type }}
+{%- else %}
+    # {{ param.name }}: {{ param.default | dumpYaml }}
+{%- endif %}
+{%- endfor %}
+```
+{%- endif %}
+
 
 {% if meta.examples %}
 {% for example in meta.examples %}
