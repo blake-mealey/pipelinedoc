@@ -2,6 +2,14 @@
   "name": "@pipelinedoc/cli",
   "version": "0.0.0-development",
   "description": "CLI for generating docs from Azure Pipelines YAML templates",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blake-mealey/pipelinedoc",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/blake-mealey/pipelinedoc/issues"
+  },
   "types": "build/types/types.d.ts",
   "bin": {
     "pipelinedoc": "bin/pipelinedoc"
