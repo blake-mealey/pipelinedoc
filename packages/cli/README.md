@@ -1,6 +1,7 @@
 # @pipelinedoc/cli
 
-The CLI for generating docs for your YAML pipeline template files.
+The CLI for generating docs for your YAML pipeline template files. [Sample generated
+docs](https://github.com/blake-mealey/pipelinedoc/blob/master/fixtures/docs/index.md).
 
 ## Install
 
